@@ -308,42 +308,29 @@
                     </div>
                 <div class="card-body flex-grow-1 d-flex flex-column">
                     <div class="table-responsive flex-grow-1">
-                        <table class="table star-student table-hover table-center table-borderless table-striped">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th class="text-center">Marks</th>
-                                        <th class="text-center">Percentage</th>
-                                        <th class="text-end">Year</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-nowrap">PRE2209</td>
-                                        <td class="text-nowrap">
-                                            <a href="profile.html">
-                                                <img class="rounded-circle" src="assets/img/profiles/avatar-02.jpg" width="25" alt="Star Students">
-                                                John Smith
-                                            </a>
-                                        </td>
-                                        <td class="text-center">1185</td>
-                                        <td class="text-center">98%</td>
-                                        <td class="text-end">2019</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-nowrap">PRE1245</td>
-                                        <td class="text-nowrap">
-                                            <a href="profile.html">
-                                                <img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="25" alt="Star Students">
-                                                Jolie Hoskins
-                                            </a>
-                                        </td>
-                                        <td class="text-center">1195</td>
-                                        <td class="text-center">99.5%</td>
-                                        <td class="text-end">2018</td>
-                                    </tr>
-                                </tbody>
+                        <table class="table table-hover table-center table-borderless table-striped">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Dr. Lili</td>
+                                    <td>Deputy Dean (Head)</td>
+                                    <td>2024-01-01</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Jane Smith</td>
+                                    <td>janesmith@example.com</td>
+                                    <td>2024-02-15</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

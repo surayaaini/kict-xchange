@@ -235,8 +235,8 @@
                             <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> KICT X-Change</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="student-dashboard">About</a></li>
-                                <li><a href="add-teacher.html">Mobility Programmes</a></li>
+                                <li><a href="{{ route('about') }}">About</a></li>
+                                <li><a href="student-dashboard">Mobility Programmes</a></li>
                                 <li><a href="edit-teacher.html">MOU/MOA List</a></li>
                                 <li><a href="edit-teacher.html">Student Experience</a></li>
                                 <li><a href="edit-teacher.html">FAQ</a></li>

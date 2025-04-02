@@ -30,6 +30,12 @@ Route::middleware([
     Route::get('student-dashboard', function () {
         return view('admin/student-dashboard');
     })->name('student.dashboard');
+
+    Route::get('/about', function () {
+        return view('student.about');
+    })->name('about');
+
+
 });
 
 
