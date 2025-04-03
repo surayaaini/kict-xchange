@@ -315,6 +315,7 @@
                                     <th>Name</th>
                                     <th>Position</th>
                                     <th>Email</th>
+                                    <th>Extension</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -322,13 +323,22 @@
                                     <td>1</td>
                                     <td>Dr. Lili</td>
                                     <td>Deputy Dean (Head)</td>
-                                    <td>2024-01-01</td>
+                                    <td>lmarziana@iium.edu.my</td>
+                                    <th>5657</th>
                                 </tr>
                                 <tr>
                                     <td>2</td>
-                                    <td>Jane Smith</td>
-                                    <td>janesmith@example.com</td>
-                                    <td>2024-02-15</td>
+                                    <td>Narieta Bt Bukhari</td>
+                                    <td>Administrative Officer</td>
+                                    <td>narieta@iium.edu.my</td>
+                                    <th>5609</th>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Narieta Bt Bukhari</td>
+                                    <td>Administrative Assistant</td>
+                                    <td>meorshahmer@iium.edu.my</td>
+                                    <th>5609</th>
                                 </tr>
                             </tbody>
                         </table>

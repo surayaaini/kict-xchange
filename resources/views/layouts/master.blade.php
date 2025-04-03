@@ -219,11 +219,13 @@
                             <span>Main Menu</span>
                         </li>
 
+                        {{-- ADMIN VIEW --}}
                         @if (Auth::user()->role_id == '1')
                         <li class="submenu active">
                             <a href="#"><i class="feather-grid"></i> <span> KICT X-Change</span> <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="admin-dashboard">Admin Dashboard</a></li>
+                                <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
                                 {{-- <li><a href="teacher-dashboard">Teacher Dashboard</a></li>
                                 <li><a href="student-dashboard">Student Dashboard</a></li> --}}
                             </ul>
@@ -237,13 +239,26 @@
                             <ul>
                                 <li><a href="{{ route('about') }}">About</a></li>
                                 <li><a href="student-dashboard">Mobility Programmes</a></li>
-                                <li><a href="edit-teacher.html">MOU/MOA List</a></li>
+                                <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
                                 <li><a href="edit-teacher.html">Student Experience</a></li>
                                 <li><a href="edit-teacher.html">FAQ</a></li>
 
                             </ul>
                         </li>
                         @endif
+                        @if (Auth::user()->role_id == '3')
+                            <li class="submenu">
+                                <a href="#"><i class="fas fa-graduation-cap"></i> <span>KICT X-Change</span> <span
+                                        class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="admin-welcome">Outbound Mobility Proposal</a></li>
+                                    <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
+                                    <!--<li><a href="add-student.html">Student Add</a></li>-->
+                                    <!--<li><a href="edit-student.html">Student Edit</a></li>-->
+                                </ul>
+                            </li>
+                        @endif
+
                         {{-- @if (Auth::user()->role_id == '2' || Auth::user()->role_id == '5')
                         <li class="submenu">
                             <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> SEMS</span> <span
@@ -253,19 +268,6 @@
                             </ul>
                         </li>
                         @endif --}}
-
-                        @if (Auth::user()->role_id == '3')
-                            <li class="submenu">
-                                <a href="#"><i class="fas fa-graduation-cap"></i> <span>KICT X-Change</span> <span
-                                        class="menu-arrow"></span></a>
-                                <ul>
-                                    <li><a href="admin-welcome">Outbound Mobility Proposal</a></li>
-                                    <li><a href="SSP-welcome">MOU/MOA List</a></li>
-                                    <!--<li><a href="add-student.html">Student Add</a></li>-->
-                                    <!--<li><a href="edit-student.html">Student Edit</a></li>-->
-                                </ul>
-                            </li>
-                        @endif
 
                         {{-- <li class="submenu">
                             <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span

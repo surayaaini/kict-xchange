@@ -9,12 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
-    }
+    public function up()
+{
+    Schema::table('users', function (Blueprint $table) {
+        $table->integer('role_id')->default(2); // Default to Student (ID: 2)
+    });
+}
+
+
+
 
     /**
      * Reverse the migrations.
