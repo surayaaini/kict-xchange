@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Kernel
+class Authenticate
 {
     /**
      * Handle an incoming request.
@@ -17,6 +17,4 @@ class Kernel
     {
         return $next($request);
     }
-
 }
-
