@@ -20,17 +20,37 @@ class MouMoaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'university_name' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
+        // 1. Validate inputs
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'partner' => 'required|string|max:255',
             'start_date' => 'required|date',
-            'end_date' => 'nullable|date',
-            'details' => 'nullable|string',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'description' => 'nullable|string',
         ]);
 
-        MouMoa::create($request->all());
-        return redirect()->route('moumoa.index')->with('success', 'MOU/MOA added successfully.');
+        // 2. Save to database
+        \App\Models\MouMoa::create($validated);
+
+        // 3. Redirect back to list with success message
+        return redirect()->route('moumoa.index')->with('success', 'MOU/MOA added successfully!');
     }
+
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'university_name' => 'required|string|max:255',
+    //         'country' => 'required|string|max:255',
+    //         'start_date' => 'required|date',
+    //         'end_date' => 'nullable|date',
+    //         'details' => 'nullable|string',
+    //     ]);
+
+    //     MouMoa::create($request->all());
+    //     return redirect()->route('moumoa.index')->with('success', 'MOU/MOA added successfully.');
+
+
+    // }
 
     public function edit($id)
     {

@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MouMoaController;
-app()->make(\App\Http\Middleware\RoleMiddleware::class);
 
 
 Route::get('/mou-moa', [MouMoaController::class, 'index'])->name('moumoa.index');
