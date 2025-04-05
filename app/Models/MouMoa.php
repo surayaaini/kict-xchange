@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class MouMoa extends Model
 {
     protected $fillable = [
-        'title',
-        'partner',
-        'start_date',
-        'end_date',
-        'description',
+        'collaborator',
+        'signed_date',
+        'expiry_date',
+        'focal_person',
+        'type',
+        'impact',
     ];
+
+
 
 }

@@ -20,37 +20,18 @@ class MouMoaController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validate inputs
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'partner' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'description' => 'nullable|string',
+            'collaborator' => 'required|string|max:255',
+            'signed_date' => 'required|date',
+            'expiry_date' => 'nullable|date|after_or_equal:signed_date',
+            'focal_person' => 'required|string|max:255',
+            'type' => 'required|in:MoU,MoA',
+            'impact' => 'required|string|max:255',
         ]);
 
-        // 2. Save to database
-        \App\Models\MouMoa::create($validated);
-
-        // 3. Redirect back to list with success message
+        MouMoa::create($validated);
         return redirect()->route('moumoa.index')->with('success', 'MOU/MOA added successfully!');
     }
-
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'university_name' => 'required|string|max:255',
-    //         'country' => 'required|string|max:255',
-    //         'start_date' => 'required|date',
-    //         'end_date' => 'nullable|date',
-    //         'details' => 'nullable|string',
-    //     ]);
-
-    //     MouMoa::create($request->all());
-    //     return redirect()->route('moumoa.index')->with('success', 'MOU/MOA added successfully.');
-
-
-    // }
 
     public function edit($id)
     {
@@ -60,8 +41,16 @@ class MouMoaController extends Controller
 
     public function update(Request $request, $id)
     {
-        $moumoa = MouMoa::findOrFail($id);
-        $moumoa->update($request->all());
+        $validated = $request->validate([
+            'collaborator' => 'required|string|max:255',
+            'signed_date' => 'required|date',
+            'expiry_date' => 'nullable|date|after_or_equal:signed_date',
+            'focal_person' => 'required|string|max:255',
+            'type' => 'required|in:MoU,MoA',
+            'impact' => 'required|string|max:255',
+        ]);
+
+        MouMoa::findOrFail($id)->update($validated);
         return redirect()->route('moumoa.index')->with('success', 'MOU/MOA updated successfully.');
     }
 

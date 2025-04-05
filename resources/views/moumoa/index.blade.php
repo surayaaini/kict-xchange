@@ -10,41 +10,45 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="container">
-    <h1>MOU/MOA List</h1>
-
+<div class="content container-fluid">
+ <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-sub-header">
+                    <h3 class="page-title">MOU/MOA List</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
+                        <li class="breadcrumb-item active">MOU/MOA List</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>
-                <th>University</th>
-                <th>Country</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Details</th>
-                @if(auth()->user()->role_id == 1)  <!-- Admin Only -->
-                    <th>Actions</th>
-                @endif
+                <th>No.</th>
+                <th>Collaborator</th>
+                <th>Signed Date</th>
+                <th>Expiry Date</th>
+                <th>Focal Person</th>
+                <th>MoU/MoA</th>
+                <th>Impact</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($moumoas as $moumoa)
+            @foreach($moumoas as $index => $moumoa)
                 <tr>
-                    <td>{{ $moumoa->university_name }}</td>
-                    <td>{{ $moumoa->country }}</td>
-                    <td>{{ $moumoa->start_date }}</td>
-                    <td>{{ $moumoa->end_date ?? 'N/A' }}</td>
-                    <td>{{ $moumoa->details }}</td>
-
-                    @if(auth()->user()->role_id == 1)  <!-- Admin Only -->
-                        <td>
-                            <a href="{{ route('moumoa.edit', $moumoa->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('moumoa.destroy', $moumoa->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                            </form>
-                        </td>
-                    @endif
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $moumoa->collaborator }}</td>
+                    <td>{{ $moumoa->signed_date }}</td>
+                    <td>{{ $moumoa->expiry_date }}</td>
+                    <td>{{ $moumoa->focal_person }}</td>
+                    <td>{{ $moumoa->type }}</td>
+                    <td>{{ $moumoa->impact }}</td>
+                    <td><!-- Edit/Delete buttons here --></td>
                 </tr>
             @endforeach
         </tbody>
