@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MouMoaController;
+use App\Http\Controllers\FaqController;
 
 
 Route::get('/mou-moa', [MouMoaController::class, 'index'])->name('moumoa.index');
@@ -14,6 +15,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mou-moa', [MouMoaController::class, 'index'])->name('moumoa.index'); // View list (all users)
 });
 // Route::middleware(['auth', 'role:admin'])->group(function () {
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/mou-moa/create', [MouMoaController::class, 'create'])->name('moumoa.create');
@@ -54,8 +59,6 @@ Route::middleware([
     Route::get('/about', function () {
         return view('student.about');
     })->name('about');
-
-
 
 
 });

@@ -30,10 +30,10 @@
         <div class="header">
 
             <div class="header-left">
-                <a href="dashboard" class="logo">
+                <a href="{{ route('dashboard') }}" class="logo">
                     <img src="{{ asset('assets/img/LOGO-KICT.png') }}" alt="Logo">
                 </a>
-                <a href="dashboard" class="logo logo-small">
+                <a href="{{ route('dashboard') }}" class="logo logo-small">
                     <img src="{{ asset('assets/img/LOGO-KICT.png') }}" alt="Logo">
                 </a>
             </div>
@@ -121,6 +121,7 @@
                             <ul>
                                 <li><a href="admin-dashboard">Admin Dashboard</a></li>
                                 <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
+                                <li><a href="{{ route('faq.index') }}">FAQ</a></li>
                                 {{-- <li><a href="teacher-dashboard">Teacher Dashboard</a></li>
                                 <li><a href="student-dashboard">Student Dashboard</a></li> --}}
                             </ul>

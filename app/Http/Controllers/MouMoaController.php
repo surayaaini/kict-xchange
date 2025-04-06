@@ -7,11 +7,22 @@ use Illuminate\Http\Request;
 
 class MouMoaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $moumoas = MouMoa::all();
+        $query = MouMoa::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('collaborator', 'like', "%{$search}%")
+                ->orWhere('focal_person', 'like', "%{$search}%");
+        }
+
+        $moumoas = $query->orderBy('signed_date', 'desc')->get();
+
         return view('moumoa.index', compact('moumoas'));
     }
+
+
 
     public function create()
     {

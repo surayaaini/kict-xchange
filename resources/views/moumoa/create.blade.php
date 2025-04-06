@@ -11,9 +11,9 @@
                 <div class="page-sub-header">
                     <h3 class="page-title">Add MOU/MOA List</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
-                        <li class="breadcrumb-item active">MOU/MOA List</li>
-                        <li class="breadcrumb-item active">Add New</li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
+                        <li class="breadcrumb-item active">Add</li>
 
                     </ul>
                 </div>
