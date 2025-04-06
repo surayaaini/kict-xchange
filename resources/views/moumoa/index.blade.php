@@ -1,17 +1,17 @@
-
-
-@if(session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-        {{ session('success') }}
-    </div>
-@endif
-
-
 @extends('layouts.master')
 
 @section('content')
 <div class="content container-fluid">
- <!-- Page Header -->
+
+    <!-- Success Message -->
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    <!-- Page Header -->
     <div class="page-header">
         <div class="row">
             <div class="col-sm-12">
@@ -25,8 +25,10 @@
             </div>
         </div>
     </div>
-    <table class="table">
-        <thead>
+
+    <!-- Table -->
+    <table class="table table-bordered">
+        <thead class="table-light">
             <tr>
                 <th>No.</th>
                 <th>Collaborator</th>
@@ -48,17 +50,52 @@
                     <td>{{ $moumoa->focal_person }}</td>
                     <td>{{ $moumoa->type }}</td>
                     <td>{{ $moumoa->impact }}</td>
-                    <td><!-- Edit/Delete buttons here --></td>
+                    <td>
+                        @if(auth()->user()->role_id == 1)
+                            <a href="{{ route('moumoa.edit', $moumoa->id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+                            <!-- Delete Button triggers modal -->
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $moumoa->id }}">
+                                Delete
+                            </button>
+                        @endif
+                    </td>
                 </tr>
+
+                <!-- Delete Confirmation Modal (outside of <tr>) -->
+                @if(auth()->user()->role_id == 1)
+                    <div class="modal fade" id="deleteModal{{ $moumoa->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $moumoa->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title" id="deleteModalLabel{{ $moumoa->id }}">Confirm Delete</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this MOU/MOA entry for <strong>{{ $moumoa->collaborator }}</strong>?
+                            </div>
+                            <div class="modal-footer">
+                                <form action="{{ route('moumoa.destroy', $moumoa->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this entry?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                @endif
             @endforeach
         </tbody>
     </table>
 
-
-        <!-- Show Add Button only for Admin (Role ID: 1) -->
-        @if(auth()->user()->role_id == 1)
-        <a href="{{ route('moumoa.create') }}" class="btn btn-primary">Add MOU/MOA</a>
+    <!-- ➕ Add Button (Only for Admin) -->
+    @if(auth()->user()->role_id == 1)
+        <a href="{{ route('moumoa.create') }}" class="btn btn-primary mt-3">Add MOU/MOA</a>
     @endif
+
+    <br>
+    <br>
 
 </div>
 @endsection

@@ -21,6 +21,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mou-moa/{id}/edit', [MouMoaController::class, 'edit'])->name('moumoa.edit');
     Route::put('/mou-moa/{id}', [MouMoaController::class, 'update'])->name('moumoa.update');
     Route::delete('/mou-moa/{id}', [MouMoaController::class, 'destroy'])->name('moumoa.destroy');
+    Route::delete('/moumoa/{id}', [MouMoaController::class, 'destroy'])->name('moumoa.destroy');
+
 });
 
 

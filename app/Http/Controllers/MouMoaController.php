@@ -60,3 +60,4 @@ class MouMoaController extends Controller
         return redirect()->route('moumoa.index')->with('success', 'MOU/MOA deleted successfully.');
     }
 }
+

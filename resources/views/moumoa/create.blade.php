@@ -22,7 +22,7 @@
     </div>
 
     <!-- Add MOU/MOA Form Section -->
-    <form method="POST" action="{{ route('moumoa.store') }}">
+    <form method="POST" action="{{ route('moumoa.store') }}" onsubmit="return confirm('Are you sure you want to add this new entry?')">
         @csrf
 
         <div class="mb-3">
@@ -66,7 +66,6 @@
                 <option value="Health, Environment, Engineering trades, any other areas of cooperation – Research Collaboration and Teaching & Learning">Health, Environment, Engineering trades, any other areas of cooperation – Research Collaboration and Teaching & Learning</option>
                 <option value="Biometric-Computer-on-Card – Research Collaboration">Biometric-Computer-on-Card – Research Collaboration</option>
                 <option value="Others">Others</option>
-
             </select>
         </div>
 
