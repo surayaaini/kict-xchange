@@ -27,27 +27,32 @@
                 placeholder="Search FAQs..."
                 value="{{ request('search') }}"
             >
-            <button class="btn btn-primary" type="submit">Search</button>
+            <button class="btn btn-primary me-2" type="submit">Search</button>
+
+            @if(auth()->user()->role_id === 1)
+            <a href="{{ route('faq.admin') }}" class="btn btn-outline-secondary">Manage FAQs</a>
+            @endif
         </form>
     </div>
 
 
-    @foreach ($faqs as $category => $items)
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-primary text-white fw-bold">
+
+    @foreach ($groupedFaqs as $category => $items)
+    <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header fw-bold" style="background-color: #0a2647; color: white;">
                 {{ $category }}
             </div>
-            <div class="card-body">
+            <div class="card-body bg-white p-3">
                 <div class="accordion" id="accordion-{{ Str::slug($category) }}">
                     @foreach ($items as $index => $faq)
-                        <div class="accordion-item">
+                        <div class="accordion-item border mb-3" style="border-color: #e3e6ea;">
                             <h2 class="accordion-header" id="heading-{{ $faq->id }}">
-                                <button class="accordion-button {{ $index !== 0 ? 'collapsed' : '' }}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $faq->id }}" aria-expanded="{{ $index === 0 ? 'true' : 'false' }}">
+                                <button class="accordion-button {{ $index !== 0 ? 'collapsed' : '' }} bg-white text-dark fw-normal" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $faq->id }}" aria-expanded="{{ $index === 0 ? 'true' : 'false' }}" style="box-shadow: none;">
                                     {{ $faq->question }}
                                 </button>
                             </h2>
                             <div id="collapse-{{ $faq->id }}" class="accordion-collapse collapse {{ $index === 0 ? 'show' : '' }}" aria-labelledby="heading-{{ $faq->id }}" data-bs-parent="#accordion-{{ Str::slug($category) }}">
-                                <div class="accordion-body">
+                                <div class="accordion-body text-muted" style="background-color: #f9f9f9;">
                                     {!! nl2br(e($faq->answer)) !!}
                                 </div>
                             </div>
@@ -57,5 +62,7 @@
             </div>
         </div>
     @endforeach
+
+
 </div>
 @endsection

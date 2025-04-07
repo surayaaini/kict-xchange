@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
@@ -7,20 +8,24 @@ use Illuminate\Http\Request;
 class FaqController extends Controller
 {
     public function index(Request $request)
-{
-    $query = Faq::query();
-
-    if ($request->has('search')) {
+    {
         $search = $request->input('search');
-        $query->where('question', 'like', "%{$search}%")
-              ->orWhere('answer', 'like', "%{$search}%");
+
+        // Table view (searchable)
+        $faqList = Faq::when($search, function ($query, $search) {
+            return $query->where('question', 'like', "%$search%")
+                         ->orWhere('answer', 'like', "%$search%")
+                         ->orWhere('category', 'like', "%$search%");
+        })->latest()->get();
+
+        // Accordion view (grouped by category)
+        $groupedFaqs = Faq::all()->groupBy('category');
+
+        return view('faq.index', [
+            'faqs' => $faqList,
+            'groupedFaqs' => $groupedFaqs,
+        ]);
     }
-
-    $faqs = $query->get()->groupBy('category');
-
-    return view('faq.index', compact('faqs'));
-}
-
 
     public function create()
     {
@@ -36,6 +41,7 @@ class FaqController extends Controller
         ]);
 
         Faq::create($request->all());
+
         return redirect()->route('faq.index')->with('success', 'FAQ added successfully.');
     }
 
@@ -54,13 +60,27 @@ class FaqController extends Controller
         ]);
 
         Faq::findOrFail($id)->update($request->all());
+
         return redirect()->route('faq.index')->with('success', 'FAQ updated successfully.');
     }
 
     public function destroy($id)
     {
         Faq::findOrFail($id)->delete();
+
         return redirect()->route('faq.index')->with('success', 'FAQ deleted successfully.');
     }
-}
 
+    public function admin()
+    {
+        // Only allow Admins
+        if (auth()->user()->role_id !== 1) {
+            abort(403, 'Unauthorized');
+        }
+
+        $faqs = Faq::latest()->get();
+        return view('faq.admin', compact('faqs'));
+    }
+
+
+}

@@ -20,6 +20,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 });
 
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('faqs', FaqController::class);
+    Route::get('/admin/faqs', [FaqController::class, 'admin'])->name('faq.admin')->middleware('auth');
+
+});
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/mou-moa/create', [MouMoaController::class, 'create'])->name('moumoa.create');
     Route::post('/mou-moa', [MouMoaController::class, 'store'])->name('moumoa.store');

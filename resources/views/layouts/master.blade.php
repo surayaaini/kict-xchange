@@ -137,7 +137,7 @@
                                 <li><a href="student-dashboard">Mobility Programmes</a></li>
                                 <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
                                 <li><a href="edit-teacher.html">Student Experience</a></li>
-                                <li><a href="edit-teacher.html">FAQ</a></li>
+                                <li><a href="{{ route('faq.index') }}">FAQ</a></li>
 
                             </ul>
                         </li>
