@@ -5,27 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 
+
+
 class FaqController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
 
-        // Table view (searchable)
-        $faqList = Faq::when($search, function ($query, $search) {
-            return $query->where('question', 'like', "%$search%")
-                         ->orWhere('answer', 'like', "%$search%")
-                         ->orWhere('category', 'like', "%$search%");
-        })->latest()->get();
+        // If search exists, filter FAQs
+        $faqs = Faq::when($search, function ($query, $search) {
+            return $query->where('question', 'like', '%' . $search . '%')
+                        ->orWhere('answer', 'like', '%' . $search . '%')
+                        ->orWhere('category', 'like', '%' . $search . '%');
+        })->get();
 
-        // Accordion view (grouped by category)
-        $groupedFaqs = Faq::all()->groupBy('category');
+        // Group by category
+        $groupedFaqs = $faqs->groupBy('category');
 
-        return view('faq.index', [
-            'faqs' => $faqList,
-            'groupedFaqs' => $groupedFaqs,
-        ]);
+        return view('faq.index', compact('groupedFaqs'));
     }
+
 
     public function create()
     {

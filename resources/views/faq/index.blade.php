@@ -18,23 +18,44 @@
         </div>
     </div>
 
-    <div class="mb-3">
-        <form action="{{ route('faq.index') }}" method="GET" class="d-flex" role="search">
-            <input
-                type="search"
-                name="search"
-                class="form-control me-2"
-                placeholder="Search FAQs..."
-                value="{{ request('search') }}"
-            >
-            <button class="btn btn-primary me-2" type="submit">Search</button>
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <!-- Search Bar -->
+            <form action="{{ route('faq.index') }}" method="GET" class="d-flex flex-grow-1" role="search">
+                <input
+                    class="form-control form-control-sm me-2 w-50"
+                    type="search"
+                    name="search"
+                    placeholder="Search FAQs..."
+                    value="{{ request('search') }}"
+                    aria-label="Search"
+                >
+                <button class="btn btn-outline-primary btn-sm" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
 
-            @if(auth()->user()->role_id === 1)
-            <a href="{{ route('faq.admin') }}" class="btn btn-outline-secondary">Manage FAQs</a>
+                @if(request('search'))
+                    <a href="{{ route('faq.index') }}" class="btn btn-outline-secondary btn-sm ms-2">
+                        Reset
+                    </a>
+                @endif
+            </form>
+
+            <!-- Feedback Message (optional, below form) -->
+            @if(request('search'))
+            <div class="alert alert-info mt-2 mb-0 w-100">
+                Showing results for "<strong>{{ request('search') }}</strong>"
+            </div>
             @endif
-        </form>
-    </div>
 
+            <!-- Manage FAQs Button (Admins only) -->
+            @if(auth()->check() && auth()->user()->role_id === 1)
+                <a href="{{ route('faq.admin') }}" class="btn btn-success btn-sm">
+                    <i class="fas fa-cogs me-1"></i> Manage FAQs
+                </a>
+            @endif
+        </div>
+    </div>
 
 
     @foreach ($groupedFaqs as $category => $items)

@@ -20,11 +20,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::resource('faqs', FaqController::class);
-    Route::get('/admin/faqs', [FaqController::class, 'admin'])->name('faq.admin')->middleware('auth');
-
+    Route::get('/admin/faqs', [FaqController::class, 'admin'])->name('faq.admin');
 });
+
+Route::get('/faq/create', [FaqController::class, 'create'])->name('faq.create');
+Route::post('/faq', [FaqController::class, 'store'])->name('faq.store');
+
 
 
 Route::middleware(['auth'])->group(function () {

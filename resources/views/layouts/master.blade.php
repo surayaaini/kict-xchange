@@ -149,6 +149,7 @@
                                 <ul>
                                     <li><a href="admin-welcome">Outbound Mobility Proposal</a></li>
                                     <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
+                                    <li><a href="{{ route('faq.index') }}">FAQ</a></li>
                                     <!--<li><a href="add-student.html">Student Add</a></li>-->
                                     <!--<li><a href="edit-student.html">Student Edit</a></li>-->
                                 </ul>
