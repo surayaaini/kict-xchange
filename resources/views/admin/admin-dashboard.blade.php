@@ -402,29 +402,6 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const hash = window.location.hash;
-
-        if (hash === '#mobility-card') {
-            const target = document.querySelector(hash);
-            if (target) {
-                // Scroll into view with an offset (if you have fixed headers)
-                const yOffset = -80; // adjust based on your fixed header height
-                const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-                window.scrollTo({ top: y, behavior: 'smooth' });
-
-                // Optional: Highlight the card
-                target.style.transition = 'background-color 0.5s ease';
-                target.style.backgroundColor = '#ffffcc'; 
-                setTimeout(() => {
-                    target.style.backgroundColor = '';
-                }, 2000);
-            }
-        }
-    });
-</script>
 
     {{-- <div class="row mt-4">
         <div class="col-12">

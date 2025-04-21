@@ -1,25 +1,5 @@
 @extends('layouts.master')
 
-{{-- @section('content')
-    <h2>Submit a Post</h2>   
-   <form action="{{route('posts.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <lable>Title:</lable>
-        <input type="text" name="title" required>
-
-        <lable>Content:</lable>
-        <textarea name="content"required></textarea>
-
-        <lable>Photo(Optional):</lable>
-        <input type="file" name="photo" accept="image/*">
-
-        <lable>Video(Optional):</lable>
-        <input type="file" name="video" accept="video/*">
-
-        <button type="submit">Submit</button>
-    </form>
-@endsection--}}
-
 @section('content')
 <div class="container mt-5">
     <h2 class="mb-4">Submit a Post</h2>

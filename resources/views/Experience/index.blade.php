@@ -1,32 +1,3 @@
-{{-- @extends('layouts.master')
-
-@section('content')
-<h2>Mobility Experience</h2>
-
-<a href="{{ route('posts.create') }}" class="btn btn-primary mb-3">
-    Create New Post
-</a>
-
-
-@foreach ($posts as $post)
-    <div>
-        <h3>{{ $post->title }}</h3>
-
-         @if ($post->photo)
-            <img src="{{ asset('storage/' . $post->photo) }}" width="200">
-        @endif
-
-        @if ($post->video)
-            <video width="320" controls>
-                <source src="{{ asset('storage/' . $post->video) }}">
-            </video>
-        @endif
-
-        <p>{{ $post->content }}</p>
-    </div>
-@endforeach
-
-@endsection --}}
 
 @extends('layouts.master')
 
