@@ -119,7 +119,7 @@
                         <li class="submenu active">
                             <a href="#"><i class="feather-grid"></i> <span> KICT X-Change</span> <span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="admin-dashboard">Admin Dashboard</a></li>
+                                <li><a href="{{ route('admin.dashboard') }}">Admin Dashboard</a></li>
                                 <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
                                 <li><a href="{{ route('faq.index') }}">FAQ</a></li>
                                 {{-- <li><a href="teacher-dashboard">Teacher Dashboard</a></li>
@@ -136,7 +136,7 @@
                                 <li><a href="{{ route('about') }}">About</a></li>
                                 <li><a href="student-dashboard">Mobility Programmes</a></li>
                                 <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
-                                <li><a href="edit-teacher.html">Student Experience</a></li>
+                                <li><a href="{{ route('posts.index') }}">Mobility Experience</a></li>
                                 <li><a href="{{ route('faq.index') }}">FAQ</a></li>
 
                             </ul>
@@ -150,6 +150,7 @@
                                     <li><a href="admin-welcome">Outbound Mobility Proposal</a></li>
                                     <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
                                     <li><a href="{{ route('faq.index') }}">FAQ</a></li>
+                                    <li><a href="{{ route('posts.index') }}">Mobility Experience</a></li>
                                     <!--<li><a href="add-student.html">Student Add</a></li>-->
                                     <!--<li><a href="edit-student.html">Student Edit</a></li>-->
                                 </ul>

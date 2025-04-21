@@ -346,7 +346,111 @@
             </div>
         </div>
     </div>
-            <div class="row">
+
+    <div class="row" id="mobility">
+    <div class="col-12 col-lg-8 col-xl-12 d-flex" >
+        <div class="card flex-fill comman-shadow">
+            <div class="card-header" >
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <h5 class="card-title">Mobility Experience</h5>
+                    </div>
+                    {{-- <div class="col-6">
+                        <span class="float-end view-link">
+                            <a href="{{ route('admin.admin.dashboard') }}">View All</a>
+                        </span>
+                    </div>--}}
+                </div>
+            </div>
+
+            <div class="pt-3 pb-3">
+                <div class="table-responsive lesson">
+                    <table class="table table-center">
+                        <tbody>
+                            @if(isset($posts) && count($posts) > 0)
+                                @foreach ($posts as $post)
+                                    <tr>
+                                        <td>
+                                            <div class="date">
+                                                <b>{{ $post->title }}</b>
+                                                <p>Status: {{ ucfirst($post->status) }}</p>
+                                                {{-- <p>Author: {{ $post->user->name ?? 'Unknown' }}</p> --}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="lesson-confirm">
+                                                <span class="badge bg-{{ $post->status === 'approved' ? 'success' : ($post->status === 'rejected' ? 'danger' : 'warning') }}">
+                                                    {{ ucfirst($post->status) }}
+                                                </span>
+                                            </div>
+                                            <a href="{{ route('posts.show', $post->id) }}" class="btn btn-info">View Post</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="2">
+                                        <p class="text-center">No posts available.</p>
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const hash = window.location.hash;
+
+        if (hash === '#mobility-card') {
+            const target = document.querySelector(hash);
+            if (target) {
+                // Scroll into view with an offset (if you have fixed headers)
+                const yOffset = -80; // adjust based on your fixed header height
+                const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+                window.scrollTo({ top: y, behavior: 'smooth' });
+
+                // Optional: Highlight the card
+                target.style.transition = 'background-color 0.5s ease';
+                target.style.backgroundColor = '#ffffcc'; 
+                setTimeout(() => {
+                    target.style.backgroundColor = '';
+                }, 2000);
+            }
+        }
+    });
+</script>
+
+    {{-- <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Mobility Experience</h5>
+                </div>
+                <div class="card-body">
+                    @if(isset($posts) && count($posts) > 0)
+                        @foreach ($posts as $post)
+                            <div class="mb-3">
+                                <h6>{{ $post->title }}</h6>
+                                 <p>Status: {{ ucfirst($post->status) }}</p>
+                                <a href="{{ route('admin.posts.show', $post->id) }}" class="btn btn-primary btn-sm">View</a>
+                            </div>
+                        @endforeach
+                    @else
+                        <p>No posts available.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>--}}
+
+
+            {{--  <div class="row">
                 <div class="col-12 col-lg-8 col-xl-12 d-flex">
                     <div class="card flex-fill comman-shadow">
                         <div class="card-header">
@@ -412,7 +516,7 @@
                 </div>
             </div>
 
-        </div>
+        </div>  --}}
 
 
 
