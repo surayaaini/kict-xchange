@@ -71,18 +71,64 @@
                 <thead class="table-light">
                     <tr>
                         <th>No.</th>
-                        <th>Collaborator</th>
-                        <th>Signed Date</th>
-                        <th>Expiry Date</th>
-                        <th>Focal Person</th>
-                        <th>MoU/MoA</th>
-                        <th>Impact</th>
+                        <th>
+                                <a href="{{ route('moumoa.index', ['sort' => 'collaborator', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="text-dark text-decoration-none">
+                                    Collaborator
+                                    @if(request('sort') == 'collaborator')
+                                        <i class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
+                                    @endif
+                                </a>
+
+                        </th>
+                        <th>
+                                <a href="{{ route('moumoa.index', ['sort' => 'signed_date', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="text-dark text-decoration-none">
+                                    Signed Date
+                                    @if(request('sort') == 'signed_date')
+                                        <i class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
+                                    @endif
+                                </a>
+
+                        </th>
+                        <th>
+                                <a href="{{ route('moumoa.index', ['sort' => 'expiry_date', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="text-dark text-decoration-none">
+                                    Expiry Date
+                                    @if(request('sort') == 'expiry_date')
+                                        <i class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
+                                    @endif
+                                </a>
+                        </th>
+                        <th>
+                            <a href="{{ route('moumoa.index', ['sort' => 'focal_person', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="text-dark text-decoration-none">
+                                Focal Person
+                                @if(request('sort') == 'focal_person')
+                                    <i class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ route('moumoa.index', ['sort' => 'type', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="text-dark text-decoration-none">
+                                MOU/MOA
+                                @if(request('sort') == 'type')
+                                    <i class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ route('moumoa.index', ['sort' => 'impact', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="text-dark text-decoration-none">
+                                Impact
+                                @if(request('sort') == 'impact')
+                                    <i class="fas fa-sort-{{ request('direction') === 'asc' ? 'up' : 'down' }}"></i>
+                                @endif
+                            </a>
+                        </th>
                         <th class="text-end">Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @forelse($moumoas as $index => $moumoa)
+
+
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $moumoa->collaborator }}</td>
@@ -90,10 +136,30 @@
                             <td>{{ $moumoa->expiry_date }}</td>
                             <td>{{ $moumoa->focal_person }}</td>
                             <td>
-                                <span class="badge bg-info text-dark">{{ $moumoa->type }}</span>
+                                <span class="badge
+                                    {{ $moumoa->type === 'MoU' ? 'bg-info' : 'bg-danger' }}">
+                                    {{ $moumoa->type }}
+                                </span>
                             </td>
                             <td>
-                                <span class="badge bg-success">{{ $moumoa->impact }}</span>
+                                @php
+                                    $impactColors = [
+                                        'General - Research Collaboration and Teaching' => 'bg-secondary',
+                                        'Internship / Industrial Training' => 'bg-warning text-dark',
+                                        'Student Exchange Programme' => 'bg-info text-dark',
+                                        'Staff Exchange Programme' => 'bg-primary',
+                                        'Dual Degree Programme' => 'bg-dark',
+                                        'Others' => 'bg-danger'
+                                    ];
+
+                                    // Normalize the impact value to prevent mismatches
+                                    $impactKey = trim($moumoa->impact);
+                                @endphp
+
+                                <span class="badge {{ $impactColors[$impactKey] ?? 'bg-secondary' }}">
+                                    {{ $moumoa->impact }}
+                                </span>
+
                             </td>
                             <td class="text-end">
                                 @if(auth()->user()->role_id == 1)

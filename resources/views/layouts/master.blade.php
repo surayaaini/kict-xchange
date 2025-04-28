@@ -72,7 +72,17 @@
                                     <img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt="{{ Auth::user()->name }}">
                                     <div class="user-text">
                                         <h6>{{ Auth::user()->name }}</h6>
-                                        <p class="text-muted mb-0">{{ Auth::user()->role->name ?? 'No Role' }}</p>
+                                            <p class="text-muted mb-0">
+                                                @if(Auth::user()->role_id == 1)
+                                                    Admin
+                                                @elseif(Auth::user()->role_id == 2)
+                                                    Staff
+                                                @elseif(Auth::user()->role_id == 3)
+                                                    Student
+                                                @else
+                                                    Unknown Role
+                                                @endif
+                                            </p>
                                     </div>
                                 </span>
                                 @endif
@@ -88,7 +98,17 @@
                             </div>
                             <div class="user-text">
                                 <h6>{{ Auth::user()->name }}</h6>
-                                <p class="text-muted mb-0">{{ Auth::user()->role->name }}</p>
+                                <p class="text-muted mb-0">
+                                    @if(Auth::user()->role_id == 1)
+                                        Admin
+                                    @elseif(Auth::user()->role_id == 2)
+                                        Staff
+                                    @elseif(Auth::user()->role_id == 3)
+                                        Student
+                                    @else
+                                        Unknown Role
+                                    @endif
+                                </p>
                             </div>
                         </div>
                         <a class="dropdown-item" href="{{ route('profile.show') }}">My Profile</a>
@@ -128,6 +148,7 @@
                         </li>
                         @endif
 
+                        {{-- STUDENT VIEW --}}
                         @if (Auth::user()->role_id == '2')
                         <li class="submenu">
                             <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> KICT X-Change</span> <span
@@ -142,15 +163,17 @@
                             </ul>
                         </li>
                         @endif
+
+                        {{-- STAFF VIEW --}}
                         @if (Auth::user()->role_id == '3')
                             <li class="submenu">
                                 <a href="#"><i class="fas fa-graduation-cap"></i> <span>KICT X-Change</span> <span
                                         class="menu-arrow"></span></a>
                                 <ul>
-                                    <li><a href="admin-welcome">Outbound Mobility Proposal</a></li>
                                     <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
                                     <li><a href="{{ route('faq.index') }}">FAQ</a></li>
                                     <li><a href="{{ route('posts.index') }}">Mobility Experience</a></li>
+                                    <li><a href="{{ route('proposal.index') }}">Mobility Proposal</a></li>
                                     <!--<li><a href="add-student.html">Student Add</a></li>-->
                                     <!--<li><a href="edit-student.html">Student Edit</a></li>-->
                                 </ul>

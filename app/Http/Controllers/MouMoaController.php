@@ -11,16 +11,29 @@ class MouMoaController extends Controller
     {
         $query = MouMoa::query();
 
-        if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where('collaborator', 'like', "%{$search}%")
-                ->orWhere('focal_person', 'like', "%{$search}%");
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('collaborator', 'like', '%' . $request->search . '%')
+                  ->orWhere('focal_person', 'like', '%' . $request->search . '%');
+            });
         }
 
-        $moumoas = $query->orderBy('signed_date', 'desc')->get();
+        // Sorting logic
+        $sortable = ['collaborator', 'signed_date', 'expiry_date', 'focal_person', 'type', 'impact'];
+        $sort = $request->get('sort');
+        $direction = $request->get('direction') === 'desc' ? 'desc' : 'asc';
+
+        if (in_array($sort, $sortable)) {
+            $query->orderBy($sort, $direction);
+        } else {
+            $query->orderBy('signed_date', 'desc'); // default sort
+        }
+
+        $moumoas = $query->get();
 
         return view('moumoa.index', compact('moumoas'));
     }
+
 
 
 

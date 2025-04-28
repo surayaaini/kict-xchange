@@ -5,6 +5,8 @@ use App\Http\Controllers\MouMoaController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminPostController;
+use App\Http\Controllers\ProposalController;
+
 
 
 
@@ -90,3 +92,19 @@ Route::get('/posts/full/{id}', [PostController::class, 'fullpost'])->name('posts
     Route::get('/posts/{id}/edit', [AdminPostController::class, 'edit'])->name('posts.edit');
     Route::put('/posts/{id}', [AdminPostController::class, 'update'])->name('posts.update');
 //});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/proposal/create', [ProposalController::class, 'create'])->name('proposal.create');
+    Route::post('/proposal/store', [ProposalController::class, 'store'])->name('proposal.store');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('proposal', \App\Http\Controllers\ProposalController::class);
+});
+
+Route::get('/proposal/{id}', [ProposalController::class, 'show'])->name('proposal.show');
+Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal.index');
+Route::post('/proposal', [ProposalController::class, 'store'])->name('proposal.store');
+
+
+
