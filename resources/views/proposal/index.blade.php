@@ -3,6 +3,15 @@
 @section('content')
 <div class="content container-fluid">
 
+    @if (session('success'))
+    <div class="alert alert-dismissible fade show text-white" role="alert" style="background-color: #0a2647;">
+        <strong>Success!</strong> {{ session('success') }}
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
+
+
     <!-- Page Header -->
     <div class="page-header">
         <div class="row">
@@ -67,6 +76,9 @@
                                 <td class="text-end">
                                     <a href="{{ route('proposal.show', $proposal->id) }}" class="btn btn-info btn-sm me-1">
                                         <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ route('proposal.edit', $proposal->id) }}" class="btn btn-sm btn-primary me-1">
+                                        <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('proposal.destroy', $proposal->id) }}" method="POST" style="display: inline;">
                                         @csrf

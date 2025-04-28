@@ -69,6 +69,51 @@ class ProposalController extends Controller
         return view('proposal.index', compact('proposals'));
     }
 
+    public function show($id)
+    {
+        $proposal = Proposal::findOrFail($id);
+
+        return view('proposal.show', compact('proposal'));
+    }
+
+    public function destroy($id)
+    {
+        $proposal = Proposal::findOrFail($id);
+        $proposal->delete();
+
+        return redirect()->route('proposal.index')->with('success', 'Proposal withdrawn successfully!');
+    }
+
+    public function edit($id)
+    {
+        $proposal = Proposal::findOrFail($id);
+        $moumoas = MouMoa::all(); // in case you need Partner Universities list
+
+        return view('proposal.edit', compact('proposal', 'moumoas'));
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        $proposal = Proposal::findOrFail($id);
+
+        $validated = $request->validate([
+            'submitted_by_name' => 'required|string',
+            'submitted_by_email' => 'required|email',
+            'submitted_by_phone' => 'required|string',
+            'partner_university' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'objective' => 'required|string',
+            // you can validate documents again if you want
+        ]);
+
+        $proposal->update($validated);
+
+        return redirect()->route('proposal.index')->with('success', 'Proposal updated successfully!');
+
+    }
+
 
 
 }

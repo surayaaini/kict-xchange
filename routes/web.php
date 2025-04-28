@@ -105,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/proposal/{id}', [ProposalController::class, 'show'])->name('proposal.show');
 Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal.index');
 Route::post('/proposal', [ProposalController::class, 'store'])->name('proposal.store');
-
-
+Route::delete('/proposal/{id}', [ProposalController::class, 'destroy'])->name('proposal.destroy');
+Route::get('/proposal/{id}/edit', [ProposalController::class, 'edit'])->name('proposal.edit');
+Route::put('/proposal/{id}', [ProposalController::class, 'update'])->name('proposal.update');
 

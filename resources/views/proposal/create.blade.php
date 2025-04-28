@@ -3,6 +3,14 @@
 @section('content')
 <div class="content container-fluid">
 
+    @if (session('success'))
+    <div class="alert alert-dismissible fade show text-white" role="alert" style="background-color: #0a2647;">
+        <strong>Success!</strong> {{ session('success') }}
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
+
     <!-- Page Header -->
     <div class="page-header">
         <div class="row">
