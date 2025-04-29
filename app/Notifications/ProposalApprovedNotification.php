@@ -3,29 +3,21 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\DatabaseMessage;
 use Illuminate\Notifications\Notification;
 
-class ProposalApprovedNotification extends Notification implements ShouldQueue
+class ProposalApprovedNotification extends Notification
 {
     use Queueable;
 
-    public function __construct()
-    {
-        // You can pass in extra data if needed
-    }
-
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database']; // important: send to DB
     }
 
     public function toDatabase($notifiable)
     {
         return [
-            'message' => 'Your mobility proposal has been approved.',
-            'url' => route('proposal.index'),
+            'message' => 'Your mobility proposal has been approved!'
         ];
     }
 }

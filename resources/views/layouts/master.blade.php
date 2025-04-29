@@ -101,7 +101,6 @@
                     </a>
                 </li>
 
-
                 <!-- Notification Bell -->
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -112,11 +111,20 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-end p-2" style="min-width: 300px; max-height: 400px; overflow-y: auto;">
                         <h6 class="dropdown-header">Notifications</h6>
+
+
                         @forelse(auth()->user()->unreadNotifications as $notification)
-                            <div class="dropdown-item border-bottom small">
+                        <div class="dropdown-item border-bottom small">
+                            @if(isset($notification->data['proposal_id']))
+                                <a href="{{ route('mobility.apply.form', $notification->data['proposal_id']) }}" class="text-decoration-none">
+                                    <div class="text-dark">{{ $notification->data['message'] }}</div>
+                                    <div class="text-muted small">{{ $notification->created_at->diffForHumans() }}</div>
+                                </a>
+                            @else
                                 <div class="text-muted">{{ $notification->data['message'] ?? 'You have a new notification.' }}</div>
                                 <div class="text-muted small">{{ $notification->created_at->diffForHumans() }}</div>
-                            </div>
+                            @endif
+                        </div>
                         @empty
                             <div class="dropdown-item text-muted">No new notifications</div>
                         @endforelse
@@ -131,6 +139,7 @@
                         @endif
                     </div>
                 </li>
+
 
                 <li class="nav-item dropdown has-arrow new-user-menus">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">

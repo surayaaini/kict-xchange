@@ -7,7 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\AdminProposalController;
-
+use App\Http\Controllers\MobilityApplicationController;
 
 
 
@@ -125,3 +125,14 @@ Route::post('/notifications/mark-as-read', function () {
     auth()->user()->unreadNotifications->markAsRead();
     return back();
 })->name('notifications.markAsRead');
+
+// Routes for Students to Apply
+Route::middleware(['auth', 'role:3'])->group(function () {
+    // Show the form (we'll split into steps later)
+    Route::get('/mobility-application/{proposal}', [MobilityApplicationController::class, 'create'])
+        ->name('mobility.create');
+
+    // Store form submission
+    Route::post('/mobility-application', [MobilityApplicationController::class, 'store'])
+        ->name('mobility.store');
+});
