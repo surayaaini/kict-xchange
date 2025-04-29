@@ -72,21 +72,15 @@
                                 </a>
 
                                 <!-- Approve Button -->
-                                <form action="{{ route('admin.proposals.approve', $proposal->id) }}" method="POST" onsubmit="return confirmApprove()">
+                                <form action="{{ route('admin.proposals.approve', $proposal->id) }}" method="POST" onsubmit="confirmApprove(event, this)">
                                     @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        <i class="fas fa-check"></i> Approve
-                                    </button>
+                                    <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Approve</button>
                                 </form>
 
                                 <!-- Reject Button -->
-                                <form action="{{ route('admin.proposals.reject', $proposal->id) }}" method="POST" onsubmit="return confirmReject()">
+                                <form action="{{ route('admin.proposals.reject', $proposal->id) }}" method="POST" onsubmit="confirmReject(event, this)">
                                     @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-times"></i> Reject
-                                    </button>
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-times"></i> Reject</button>
                                 </form>
                             </td>
                         </tr>

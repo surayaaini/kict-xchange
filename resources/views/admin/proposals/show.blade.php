@@ -11,7 +11,7 @@
                     <h3 class="page-title">View Proposal Details</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admin.proposals.index') }}">Proposals</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.proposal.index') }}">Proposals</a></li>
                         <li class="breadcrumb-item active">View Proposal</li>
                     </ul>
                 </div>
@@ -114,7 +114,7 @@
             @endif
 
             <div class="mt-4">
-                <a href="{{ route('admin.proposals.index') }}" class="btn btn-outline-secondary">Back to Proposals List</a>
+                <a href="{{ route('admin.proposal.index') }}" class="btn btn-outline-secondary">Back to Proposals List</a>
             </div>
         </div>
     </div>

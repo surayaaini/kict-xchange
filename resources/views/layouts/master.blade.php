@@ -23,6 +23,44 @@
 
 </head>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmApprove(event, form) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You are about to approve this proposal.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, approve it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    }
+
+    function confirmReject(event, form) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You are about to reject this proposal.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, reject it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    }
+</script>
+
 <body>
 
     <div class="main-wrapper">
@@ -61,6 +99,37 @@
                         <img src="{{ asset('assets/img/icons/header-icon-04.svg') }}" alt="Logo">
 
                     </a>
+                </li>
+
+
+                <!-- Notification Bell -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        @if(auth()->user()->unreadNotifications->count() > 0)
+                            <span class="badge rounded-pill bg-danger">{{ auth()->user()->unreadNotifications->count() }}</span>
+                        @endif
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end p-2" style="min-width: 300px; max-height: 400px; overflow-y: auto;">
+                        <h6 class="dropdown-header">Notifications</h6>
+                        @forelse(auth()->user()->unreadNotifications as $notification)
+                            <div class="dropdown-item border-bottom small">
+                                <div class="text-muted">{{ $notification->data['message'] ?? 'You have a new notification.' }}</div>
+                                <div class="text-muted small">{{ $notification->created_at->diffForHumans() }}</div>
+                            </div>
+                        @empty
+                            <div class="dropdown-item text-muted">No new notifications</div>
+                        @endforelse
+
+                        @if(auth()->user()->unreadNotifications->count())
+                            <form action="{{ route('notifications.markAsRead') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-center text-primary fw-bold">
+                                    Mark all as read
+                                </button>
+                            </form>
+                        @endif
+                    </div>
                 </li>
 
                 <li class="nav-item dropdown has-arrow new-user-menus">

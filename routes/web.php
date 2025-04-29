@@ -117,6 +117,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/proposals/{id}/approve', [App\Http\Controllers\AdminProposalController::class, 'approve'])->name('admin.proposal.approve');
     Route::get('/admin/proposals/{id}/reject', [App\Http\Controllers\AdminProposalController::class, 'reject'])->name('admin.proposal.reject');
     Route::get('/admin/proposals/{id}', [AdminProposalController::class, 'show'])->name('admin.proposals.show');
-
+    Route::post('/admin/proposals/{id}/approve', [AdminProposalController::class, 'approve'])->name('admin.proposals.approve');
+    Route::post('/admin/proposals/{id}/reject', [AdminProposalController::class, 'reject'])->name('admin.proposals.reject');
 });
 
+Route::post('/notifications/mark-as-read', function () {
+    auth()->user()->unreadNotifications->markAsRead();
+    return back();
+})->name('notifications.markAsRead');
