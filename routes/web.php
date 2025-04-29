@@ -6,6 +6,8 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\AdminProposalController;
+
 
 
 
@@ -108,4 +110,13 @@ Route::post('/proposal', [ProposalController::class, 'store'])->name('proposal.s
 Route::delete('/proposal/{id}', [ProposalController::class, 'destroy'])->name('proposal.destroy');
 Route::get('/proposal/{id}/edit', [ProposalController::class, 'edit'])->name('proposal.edit');
 Route::put('/proposal/{id}', [ProposalController::class, 'update'])->name('proposal.update');
+
+// Admin Proposal Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/proposals', [App\Http\Controllers\AdminProposalController::class, 'index'])->name('admin.proposal.index');
+    Route::get('/admin/proposals/{id}/approve', [App\Http\Controllers\AdminProposalController::class, 'approve'])->name('admin.proposal.approve');
+    Route::get('/admin/proposals/{id}/reject', [App\Http\Controllers\AdminProposalController::class, 'reject'])->name('admin.proposal.reject');
+    Route::get('/admin/proposals/{id}', [AdminProposalController::class, 'show'])->name('admin.proposals.show');
+
+});
 
