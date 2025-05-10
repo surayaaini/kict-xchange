@@ -42,14 +42,14 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = Post::where('status', 'Approve')->latest()->get();
+        $posts = Post::where('status', 'approved')->latest()->get();
         return view('experience.index', compact('posts'));
     }
 
     public function fullpost($id)
     {
         $post = Post::where('id', $id)
-                ->where('status', 'Approve') // Only show approved posts
+                ->where('status', 'approved') // Only show approved posts
                 ->firstOrFail();
 
         return view('experience.full-post', compact('post'));

@@ -347,19 +347,17 @@
         </div>
     </div>
 
-    <div class="row" id="mobility">
-    <div class="col-12 col-lg-8 col-xl-12 d-flex" >
+    <div class="row" id="mobility" style="margin-top: -10px;">
+    <div class="col-12 col-lg-8 col-xl-8 d-flex" >
         <div class="card flex-fill comman-shadow">
             <div class="card-header" >
                 <div class="row align-items-center">
                     <div class="col-6">
                         <h5 class="card-title">Mobility Experience</h5>
                     </div>
-                    {{-- <div class="col-6">
-                        <span class="float-end view-link">
-                            <a href="{{ route('admin.admin.dashboard') }}">View All</a>
-                        </span>
-                    </div>--}}
+                    <div class="col-6 text-end">
+                        <a href="{{ route('posts.post.history') }}" class="btn btn-link">View All</a>
+                    </div>
                 </div>
             </div>
 

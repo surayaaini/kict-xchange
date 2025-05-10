@@ -84,6 +84,7 @@ Route::get('/posts/full/{id}', [PostController::class, 'fullpost'])->name('posts
 
 //Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/admin-dashboard', [AdminPostController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/posts', [AdminPostController::class, 'history'])->name('posts.post.history');
     Route::get('/posts/{id}', [AdminPostController::class, 'show'])->name('posts.show');
     Route::patch('/posts/{id}/approve', [AdminPostController::class, 'approve'])->name('posts.approve');
     Route::patch('/posts/{id}/reject', [AdminPostController::class, 'reject'])->name('posts.reject');

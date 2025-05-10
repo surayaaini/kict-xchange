@@ -69,10 +69,10 @@ class AdminPostController extends Controller
     public function approve($id)
     {
         $post = Post::findOrFail($id);
-        $post->status = 'Approve';
+        $post->status = 'approved';
         $post->save();
 
-        return redirect()->to(route('admin.dashboard', [], false) . '#mobility')->with('success', 'Post approved successfully!');
+        return redirect()->to(route('posts.post.history', [], absolute: false) . '#mobility')->with('success', 'Post approved successfully!');
     }
 
     public function reject($id)
@@ -81,16 +81,19 @@ class AdminPostController extends Controller
         $post->status = 'rejected';
         $post->save();
 
-        return redirect()->to(route('admin.dashboard', [], false) . '#mobility')->with('success', 'Post approved successfully!');
+        return redirect()->to(route('posts.post.history', [], false) . '#mobility')->with('success', 'Post have been rejected!');
     }
 
     public function dashboard()
     {
-        // Only get posts that are pending approval
-        $posts = Post::all();
+        $posts = Post::where('status', 'pending')->latest()->get();
 
         return view('admin.admin-dashboard')->with('posts', $posts);
     }
-
+    public function history()
+    {
+        $posts = Post::latest()->get(); // show all statuses
+        return view('experience.post-history', compact('posts'));
+    }
 
 }
