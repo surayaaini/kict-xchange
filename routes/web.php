@@ -136,3 +136,8 @@ Route::middleware(['auth', 'role:3'])->group(function () {
     Route::post('/mobility-application', [MobilityApplicationController::class, 'store'])
         ->name('mobility.store');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mobility/apply', [MobilityApplicationController::class, 'create'])->name('mobility.create');
+    Route::post('/mobility/submit', [MobilityApplicationController::class, 'store'])->name('mobility.store');
+});

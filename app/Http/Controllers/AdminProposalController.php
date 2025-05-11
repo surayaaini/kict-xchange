@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\MobilityApplicationPromptNotification;
 
 
+
 class AdminProposalController extends Controller
 {
     public function index()
@@ -33,13 +34,15 @@ class AdminProposalController extends Controller
         // Notify any registered students from the proposal form
         $studentDetails = json_decode($proposal->students, true);
 
-        if (!empty($studentDetails)) {
-            foreach ($studentDetails as $student) {
-                $email = $student['email'] ?? null;
-                if ($email) {
-                    $studentUser = User::where('email', $email)->where('role_id', 3)->first();
-                    if ($studentUser) {
-                        $studentUser->notify(new MobilityApplicationPromptNotification($proposal));
+        if ($proposal->students) {
+            $students = json_decode($proposal->students, true);
+
+            foreach ($students as $student) {
+                if (isset($student['email'])) {
+                    $user = User::where('email', $student['email'])->first();
+
+                    if ($user) {
+                        $user->notify(new MobilityApplicationPromptNotification($proposal->id));
                     }
                 }
             }

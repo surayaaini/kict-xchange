@@ -44,23 +44,33 @@
                 <p>No responsible staff listed.</p>
             @endif
 
-            <h5 class="fw-bold mt-4 mb-3">IIUM Lecturers Joining</h5>
+            <h5 class="mt-4">Other IIUM Lecturers Joining</h5>
             @if($proposal->lecturers)
                 @foreach(json_decode($proposal->lecturers, true) as $lecturer)
-                    <p>• {{ $lecturer }}</p>
+                    <div class="mb-2">
+                        <strong>Name:</strong> {{ $lecturer['name'] ?? '-' }} |
+                        <strong>Email:</strong> {{ $lecturer['email'] ?? '-' }} |
+                        <strong>Phone:</strong> {{ $lecturer['phone'] ?? '-' }}
+                    </div>
                 @endforeach
             @else
-                <p>No additional lecturers listed.</p>
+                <p class="text-muted">No additional lecturers were added.</p>
             @endif
 
-            <h5 class="fw-bold mt-4 mb-3">Students Joining</h5>
+            <h5 class="mt-4">Students Joining</h5>
             @if($proposal->students)
                 @foreach(json_decode($proposal->students, true) as $student)
-                    <p>• {{ $student }}</p>
+                    <div class="mb-2">
+                        <strong>Name:</strong> {{ $student['name'] ?? '-' }} |
+                        <strong>Matric No:</strong> {{ $student['matric'] ?? '-' }} |
+                        <strong>Email:</strong> {{ $student['email'] ?? '-' }} |
+                        <strong>Kulliyyah:</strong> {{ $student['kulliyyah'] ?? '-' }}
+                    </div>
                 @endforeach
             @else
-                <p>No students listed.</p>
+                <p class="text-muted">No students were listed.</p>
             @endif
+
 
             <h5 class="fw-bold mt-4 mb-3">Uploaded Documents</h5>
             @if($proposal->documents)
