@@ -41,13 +41,120 @@
             </div>
         </div>
 
-        <!-- Steps 2–7 will be inserted next... -->
-
-        <div class="mt-4 d-flex justify-content-between">
-            <button type="button" class="btn btn-secondary" id="prevBtn" disabled>Previous</button>
-            <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
-            <button type="submit" class="btn btn-success d-none" id="submitBtn">Submit</button>
+        <!-- Step 2: Emergency Contact Information -->
+        <div class="form-step">
+            <h5 class="fw-bold">2. Emergency Contact</h5>
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" name="emergency_name" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Relationship</label>
+                <input type="text" class="form-control" name="emergency_relationship" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input type="text" class="form-control" name="emergency_phone" required>
+            </div>
+            <div class="text-end">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
         </div>
+
+        <!-- Step 3: Academic Background -->
+        <div class="form-step">
+            <h5 class="fw-bold">3. Academic Background</h5>
+            <div class="mb-3">
+                <label class="form-label">Kulliyyah</label>
+                <input type="text" class="form-control" name="kulliyyah" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Programme</label>
+                <input type="text" class="form-control" name="programme" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Current CGPA</label>
+                <input type="text" class="form-control" name="cgpa" required>
+            </div>
+            <div class="text-end">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Language Proficiency -->
+        <div class="form-step">
+            <h5 class="fw-bold">4. Language Proficiency</h5>
+            <div class="mb-3">
+                <label class="form-label">English Proficiency Test Taken (e.g. IELTS/MUET)</label>
+                <input type="text" class="form-control" name="language_test" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Score</label>
+                <input type="text" class="form-control" name="language_score" required>
+            </div>
+            <div class="text-end">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Financial Information -->
+        <div class="form-step">
+            <h5 class="fw-bold">5. Financial Information</h5>
+            <div class="mb-3">
+                <label class="form-label">Source of Financial Support</label>
+                <input type="text" class="form-control" name="financial_support" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Estimated Budget (RM)</label>
+                <input type="text" class="form-control" name="estimated_budget" required>
+            </div>
+            <div class="text-end">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 6: Mobility Programme Info -->
+        <div class="form-step">
+            <h5 class="fw-bold">6. Mobility Programme Information</h5>
+            <div class="mb-3">
+                <label class="form-label">Host Institution</label>
+                <input type="text" class="form-control" name="host_institution" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Country</label>
+                <input type="text" class="form-control" name="host_country" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Start Date</label>
+                <input type="date" class="form-control" name="mobility_start_date" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">End Date</label>
+                <input type="date" class="form-control" name="mobility_end_date" required>
+            </div>
+            <div class="text-end">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 7: Student Declaration -->
+        <div class="form-step">
+            <h5 class="fw-bold">7. Student Declaration</h5>
+            <div class="mb-3">
+                <label class="form-label">Upload Signed Declaration Form</label>
+                <input type="file" class="form-control" name="declaration_file" required>
+            </div>
+            <div class="text-end">
+                <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                <button type="submit" class="btn btn-success">Submit Application</button>
+            </div>
+        </div>
+
     </form>
 </div>
 

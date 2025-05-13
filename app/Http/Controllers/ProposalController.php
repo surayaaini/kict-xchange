@@ -47,8 +47,22 @@ class ProposalController extends Controller
             'end_date' => $validated['end_date'],
             'objective' => $validated['objective'],
             'responsible_staff' => json_encode($request->partner_staff_name),
-            'lecturers' => json_encode($request->lecturer_name),
-            'students' => json_encode($request->student_name),
+            'lecturers' => json_encode(array_map(function ($name, $email, $phone) {
+                return [
+                    'name' => $name,
+                    'email' => $email,
+                    'phone' => $phone,
+                ];
+            }, $request->lecturer_name ?? [], $request->lecturer_email ?? [], $request->lecturer_phone ?? [])),
+
+            'students' => json_encode(array_map(function ($name, $matric, $email, $kulliyyah) {
+                return [
+                    'name' => $name,
+                    'matric_no' => $matric,
+                    'email' => $email,
+                    'kulliyyah' => $kulliyyah,
+                ];
+            }, $request->student_name ?? [], $request->student_matric ?? [], $request->student_email ?? [], $request->student_kulliyyah ?? [])),
             'documents' => json_encode($uploadedFiles),
             'status' => 'Pending',
         ]);
