@@ -5,6 +5,10 @@ use App\Http\Controllers\MouMoaController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminPostController;
+use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\AdminProposalController;
+use App\Http\Controllers\MobilityApplicationController;
+
 
 
 
@@ -80,14 +84,57 @@ Route::get('/create', [PostController::class, 'create'])->name('posts.create');
 Route::post('/submit', [PostController::class, 'store'])->name('posts.store');
 Route::get('/index', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/full/{id}', [PostController::class, 'fullpost'])->name('posts.full.post');
+Route::get('/student-dashboard', [PostController::class, 'studentdashboard'])->name('student.dashboard');
 
 
-//Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/admin-dashboard', [AdminPostController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/posts', [AdminPostController::class, 'history'])->name('posts.post.history');
-    Route::get('/posts/{id}', [AdminPostController::class, 'show'])->name('posts.show');
-    Route::patch('/posts/{id}/approve', [AdminPostController::class, 'approve'])->name('posts.approve');
-    Route::patch('/posts/{id}/reject', [AdminPostController::class, 'reject'])->name('posts.reject');
-    Route::get('/posts/{id}/edit', [AdminPostController::class, 'edit'])->name('posts.edit');
-    Route::put('/posts/{id}', [AdminPostController::class, 'update'])->name('posts.update');
-//});
+Route::get('/admin-dashboard', [AdminPostController::class, 'admindashboard'])->name('admin.dashboard');
+Route::get('/posts', [AdminPostController::class, 'history'])->name('posts.post.history');
+Route::get('/posts/{id}', [AdminPostController::class, 'show'])->name('posts.show');
+Route::patch('/posts/{id}/approve', [AdminPostController::class, 'approve'])->name('posts.approve');
+Route::patch('/posts/{id}/reject', [AdminPostController::class, 'reject'])->name('posts.reject');
+Route::get('/posts/{id}/edit', [AdminPostController::class, 'edit'])->name('posts.edit');
+Route::match(['put', 'patch'],'/posts/{id}', [AdminPostController::class, 'update'])->name('posts.update');
+Route::delete('/posts/{id}', [AdminPostController::class, 'destroy'])->name('posts.destroy');
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/proposal/create', [ProposalController::class, 'create'])->name('proposal.create');
+    Route::post('/proposal/store', [ProposalController::class, 'store'])->name('proposal.store');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('proposal', \App\Http\Controllers\ProposalController::class);
+});
+
+Route::get('/proposal/{id}', [ProposalController::class, 'show'])->name('proposal.show');
+Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal.index');
+Route::post('/proposal', [ProposalController::class, 'store'])->name('proposal.store');
+Route::delete('/proposal/{id}', [ProposalController::class, 'destroy'])->name('proposal.destroy');
+Route::get('/proposal/{id}/edit', [ProposalController::class, 'edit'])->name('proposal.edit');
+Route::put('/proposal/{id}', [ProposalController::class, 'update'])->name('proposal.update');
+
+// Admin Proposal Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/proposals', [App\Http\Controllers\AdminProposalController::class, 'index'])->name('admin.proposal.index');
+    Route::get('/admin/proposals/{id}/approve', [App\Http\Controllers\AdminProposalController::class, 'approve'])->name('admin.proposal.approve');
+    Route::get('/admin/proposals/{id}/reject', [App\Http\Controllers\AdminProposalController::class, 'reject'])->name('admin.proposal.reject');
+    Route::get('/admin/proposals/{id}', [AdminProposalController::class, 'show'])->name('admin.proposals.show');
+    Route::post('/admin/proposals/{id}/approve', [AdminProposalController::class, 'approve'])->name('admin.proposals.approve');
+    Route::post('/admin/proposals/{id}/reject', [AdminProposalController::class, 'reject'])->name('admin.proposals.reject');
+});
+
+Route::post('/notifications/mark-as-read', function () {
+    auth()->user()->unreadNotifications->markAsRead();
+    return back();
+})->name('notifications.markAsRead');
+
+// Routes for Students to Apply
+Route::middleware(['auth', 'role:3'])->group(function () {
+    // Show the form (we'll split into steps later)
+    Route::get('/mobility-application/{proposal}', [MobilityApplicationController::class, 'create'])
+        ->name('mobility.create');
+
+    // Store form submission
+    Route::post('/mobility-application', [MobilityApplicationController::class, 'store'])
+        ->name('mobility.store');
+});

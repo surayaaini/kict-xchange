@@ -23,6 +23,44 @@
 
 </head>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmApprove(event, form) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You are about to approve this proposal.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, approve it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    }
+
+    function confirmReject(event, form) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You are about to reject this proposal.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, reject it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    }
+</script>
+
 <body>
 
     <div class="main-wrapper">
@@ -63,6 +101,46 @@
                     </a>
                 </li>
 
+                <!-- Notification Bell -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        @if(auth()->user()->unreadNotifications->count() > 0)
+                            <span class="badge rounded-pill bg-danger">{{ auth()->user()->unreadNotifications->count() }}</span>
+                        @endif
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end p-2" style="min-width: 300px; max-height: 400px; overflow-y: auto;">
+                        <h6 class="dropdown-header">Notifications</h6>
+
+
+                        @forelse(auth()->user()->unreadNotifications as $notification)
+                        <div class="dropdown-item border-bottom small">
+                            @if(isset($notification->data['proposal_id']))
+                                <a href="{{ route('mobility.apply.form', $notification->data['proposal_id']) }}" class="text-decoration-none">
+                                    <div class="text-dark">{{ $notification->data['message'] }}</div>
+                                    <div class="text-muted small">{{ $notification->created_at->diffForHumans() }}</div>
+                                </a>
+                            @else
+                                <div class="text-muted">{{ $notification->data['message'] ?? 'You have a new notification.' }}</div>
+                                <div class="text-muted small">{{ $notification->created_at->diffForHumans() }}</div>
+                            @endif
+                        </div>
+                        @empty
+                            <div class="dropdown-item text-muted">No new notifications</div>
+                        @endforelse
+
+                        @if(auth()->user()->unreadNotifications->count())
+                            <form action="{{ route('notifications.markAsRead') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-center text-primary fw-bold">
+                                    Mark all as read
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </li>
+
+
                 <li class="nav-item dropdown has-arrow new-user-menus">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <span class="user-img">
@@ -72,7 +150,17 @@
                                     <img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt="{{ Auth::user()->name }}">
                                     <div class="user-text">
                                         <h6>{{ Auth::user()->name }}</h6>
-                                        <p class="text-muted mb-0">{{ Auth::user()->role->name ?? 'No Role' }}</p>
+                                            <p class="text-muted mb-0">
+                                                @if(Auth::user()->role_id == 1)
+                                                    Admin
+                                                @elseif(Auth::user()->role_id == 2)
+                                                    Staff
+                                                @elseif(Auth::user()->role_id == 3)
+                                                    Student
+                                                @else
+                                                    Unknown Role
+                                                @endif
+                                            </p>
                                     </div>
                                 </span>
                                 @endif
@@ -88,7 +176,17 @@
                             </div>
                             <div class="user-text">
                                 <h6>{{ Auth::user()->name }}</h6>
-                                <p class="text-muted mb-0">{{ Auth::user()->role->name }}</p>
+                                <p class="text-muted mb-0">
+                                    @if(Auth::user()->role_id == 1)
+                                        Admin
+                                    @elseif(Auth::user()->role_id == 2)
+                                        Staff
+                                    @elseif(Auth::user()->role_id == 3)
+                                        Student
+                                    @else
+                                        Unknown Role
+                                    @endif
+                                </p>
                             </div>
                         </div>
                         <a class="dropdown-item" href="{{ route('profile.show') }}">My Profile</a>
@@ -122,12 +220,14 @@
                                 <li><a href="{{ route('admin.dashboard') }}">Admin Dashboard</a></li>
                                 <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
                                 <li><a href="{{ route('faq.index') }}">FAQ</a></li>
+                                <li><a href="{{ route('admin.proposal.index') }}">Proposals</a>                                </li>
                                 {{-- <li><a href="teacher-dashboard">Teacher Dashboard</a></li>
                                 <li><a href="student-dashboard">Student Dashboard</a></li> --}}
                             </ul>
                         </li>
                         @endif
 
+                        {{-- STUDENT VIEW --}}
                         @if (Auth::user()->role_id == '2')
                         <li class="submenu">
                             <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> KICT X-Change</span> <span
@@ -142,15 +242,17 @@
                             </ul>
                         </li>
                         @endif
+
+                        {{-- STAFF VIEW --}}
                         @if (Auth::user()->role_id == '3')
                             <li class="submenu">
                                 <a href="#"><i class="fas fa-graduation-cap"></i> <span>KICT X-Change</span> <span
                                         class="menu-arrow"></span></a>
                                 <ul>
-                                    <li><a href="admin-welcome">Outbound Mobility Proposal</a></li>
                                     <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
                                     <li><a href="{{ route('faq.index') }}">FAQ</a></li>
                                     <li><a href="{{ route('posts.index') }}">Mobility Experience</a></li>
+                                    <li><a href="{{ route('proposal.index') }}">Mobility Proposal</a></li>
                                     <!--<li><a href="add-student.html">Student Add</a></li>-->
                                     <!--<li><a href="edit-student.html">Student Edit</a></li>-->
                                 </ul>

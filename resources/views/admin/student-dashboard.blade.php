@@ -361,6 +361,43 @@
             </div>
         </div>
 
+        <div class="container" >
+            <div class="card mb-4" style="width: 600px;" id="My-Posts-Card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-edit me-2"></i><b>My Posts</b></h5>
+                    <a href="{{ route('posts.create') }}" class="btn btn-sm btn-primary">Create New Post</a>
+                </div>
+                <div class="card-body">
+
+                    @if(session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+
+                    @if($posts->count())
+                        <ul class="list-group list-group-flush">
+                            @foreach($posts as $post)
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0">{{ $post->title }}</h6>
+                                    @if($post->status == 'pending')
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    @elseif($post->status == 'approved')
+                                        <span class="badge bg-success">Approved</span>
+                                    @elseif($post->status == 'rejected')
+                                        <span class="badge bg-danger">Rejected</span>
+                                    @endif
+                                </div>
+                                <small class="text-muted">Submitted at: {{ $post->created_at->format('d M Y') }}</small>
+                            </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p>You have not submitted any posts yet.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection
 

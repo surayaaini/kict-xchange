@@ -18,27 +18,37 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string',
             'content' => 'required|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'video' => 'nullable|mimes:mp4,mov,avi|max:10000',
+            'photo' => 'nullable|image|max:5120',
+            'video' => 'nullable|mimes:mp4,mov,avi,wmv|max:51200'
         ]);
 
         $post = new Post();
         $post->title = $request->title;
         $post->content = $request->content;
+        $post->status = 'pending';
+        $post->user_id = auth()->id(); // 🔥 this connects post to the student
 
+        // Save photo if uploaded
         if ($request->hasFile('photo')) {
-            $post->photo = $request->file('photo')->store('photos', 'public');
+            if ($post->photo) Storage::delete('public/' . $post->photo); // optional cleanup
+            $path = $request->file('photo')->store('photo', 'public');
+            $post->photo = $path;
         }
 
+        // Save video if uploaded
         if ($request->hasFile('video')) {
-            $post->video = $request->file('video')->store('videos', 'public');
+            if ($post->video) Storage::delete('public/' . $post->video); // optional cleanup
+            $path = $request->file('video')->store('videos', 'public');
+            $post->video = $path;
         }
+        
 
-        $post->status = 'pending'; // default status
         $post->save();
 
-        return redirect()->route('posts.index')->with('success', 'Post submitted!');
+        return redirect()->to(route('student.dashboard', [], false) . '#My-Posts-Card') ->with('success', 'Post submitted successfully and pending approval!');
     }
+
+
 
     public function index()
     {
@@ -54,5 +64,14 @@ class PostController extends Controller
 
         return view('experience.full-post', compact('post'));
     }
+
+    public function studentDashboard()
+    {
+        // Assuming you have user authentication
+        $posts = Post::where('user_id', auth()->id())->latest()->get();
+
+        return view('admin.student-dashboard', compact('posts'));
+    }
+
 }
 

@@ -26,44 +26,63 @@ class AdminPostController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $post = Post::findOrFail($id);
+{
+    $post = Post::findOrFail($id);
 
-        $request->validate([
-            'title' => 'required|string',
-            'content' => 'required|string',
-            'image' => 'nullable|image',
-            'video' => 'nullable|mimes:mp4,mov,avi,wmv|max:10240'
-        ]);
+    $request->validate([
+        'title' => 'required|string',
+        'content' => 'required|string',
+        'image' => 'nullable|image|max:5120',
+        'video' => 'nullable|mimes:mp4,mov,avi,wmv|max:51200'
+    ]);
 
-        $post->title = $request->title;
-        $post->content = $request->content;
+    $post->title = $request->title;
+    $post->content = $request->content;
 
-        if ($request->hasFile('image')) {
-            if ($post->image_path) Storage::delete($post->image_path);
-            $post->image_path = $request->file('image')->store('images');
-        }
-
-        if ($request->hasFile('video')) {
-            if ($post->video_path) Storage::delete($post->video_path);
-            $post->video_path = $request->file('video')->store('videos');
-        }
-
-        $post->save();
-
-        return redirect()->route('posts.show', $post->id)->with('success', 'Post updated successfully!');
+    // Remove Photo
+    if ($request->has('remove_photo') && $post->photo) {
+        Storage::delete($post->photo);
+        $post->photo = null;
     }
+
+    // Remove Video
+    if ($request->has('remove_video') && $post->video) {
+        Storage::delete($post->video);
+        $post->video = null;
+    }
+
+    // Update image if uploaded
+    if ($request->hasFile('image')) {
+        if ($post->photo) {
+            Storage::delete($post->photo);
+        }
+        $post->photo = $request->file('image')->store('images');
+    }
+
+    // Update video if uploaded
+    if ($request->hasFile('video')) {
+        if ($post->video) Storage::delete('public/' . $post->video); // optional cleanup
+        $path = $request->file('video')->store('videos', 'public');
+        $post->video = $path;
+    }
+    
+
+    $post->save();
+
+    return redirect()->route('posts.show', $post->id)
+                     ->with('success', 'Post updated successfully!');
+}
 
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
 
-        if ($post->image_path) Storage::delete($post->image_path);
-        if ($post->video_path) Storage::delete($post->video_path);
+        if ($post->photo) Storage::delete($post->photo);
+        if ($post->video) Storage::delete($post->video);
 
         $post->delete();
 
-        return redirect()->route('posts.index')->with('success', 'Post deleted successfully!');
+        return redirect()->route('posts.post.history')->with('success', 'Post deleted successfully!');
     }
 
     public function approve($id)
@@ -84,7 +103,7 @@ class AdminPostController extends Controller
         return redirect()->to(route('posts.post.history', [], false) . '#mobility')->with('success', 'Post have been rejected!');
     }
 
-    public function dashboard()
+    public function admindashboard()
     {
         $posts = Post::where('status', 'pending')->latest()->get();
 
