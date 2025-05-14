@@ -3,7 +3,6 @@
 
 <head>
 
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>MYKICT</title>
@@ -115,16 +114,18 @@
 
                         @forelse(auth()->user()->unreadNotifications as $notification)
                         <div class="dropdown-item border-bottom small">
-                            @if(isset($notification->data['proposal_id']))
-                                <a href="{{ route('mobility.apply.form', $notification->data['proposal_id']) }}" class="text-decoration-none">
-                                    <div class="text-dark">{{ $notification->data['message'] }}</div>
-                                    <div class="text-muted small">{{ $notification->created_at->diffForHumans() }}</div>
-                                </a>
-                            @else
-                                <div class="text-muted">{{ $notification->data['message'] ?? 'You have a new notification.' }}</div>
-                                <div class="text-muted small">{{ $notification->created_at->diffForHumans() }}</div>
-                            @endif
+                            <div class="text-muted">
+                                @if(isset($notification->data['proposal_id']))
+                                    <a href="{{ route('mobility.create', ['proposal_id' => $notification->data['proposal_id']]) }}" class="text-decoration-underline">
+                                        {{ $notification->data['message'] ?? 'You have a new notification.' }}
+                                    </a>
+                                @else
+                                    {{ $notification->data['message'] ?? 'You have a new notification.' }}
+                                @endif
+                            </div>
+                            <div class="text-muted small">{{ $notification->created_at->diffForHumans() }}</div>
                         </div>
+
                         @empty
                             <div class="dropdown-item text-muted">No new notifications</div>
                         @endforelse
@@ -234,7 +235,7 @@
                                     class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="{{ route('about') }}">About</a></li>
-                                <li><a href="student-dashboard">Mobility Programmes</a></li>
+                                <li><a href="{{ route('mobility.index') }}">Mobility Programmes</a></li>
                                 <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
                                 <li><a href="{{ route('posts.index') }}">Mobility Experience</a></li>
                                 <li><a href="{{ route('faq.index') }}">FAQ</a></li>

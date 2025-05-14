@@ -44,33 +44,51 @@
                 <p>No responsible staff listed.</p>
             @endif
 
-            <h5 class="mt-4">Other IIUM Lecturers Joining</h5>
+            <h5 class="mt-4 fw-bold">Other IIUM Lecturers Joining</h5>
             @if($proposal->lecturers)
-                @foreach(json_decode($proposal->lecturers, true) as $lecturer)
-                    <div class="mb-2">
-                        <strong>Name:</strong> {{ $lecturer['name'] ?? '-' }} |
-                        <strong>Email:</strong> {{ $lecturer['email'] ?? '-' }} |
-                        <strong>Phone:</strong> {{ $lecturer['phone'] ?? '-' }}
-                    </div>
-                @endforeach
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th><th>Email</th><th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(json_decode($proposal->lecturers, true) as $lecturer)
+                            <tr>
+                                <td>{{ $lecturer['name'] ?? '-' }}</td>
+                                <td>{{ $lecturer['email'] ?? '-' }}</td>
+                                <td>{{ $lecturer['phone'] ?? '-' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             @else
                 <p class="text-muted">No additional lecturers were added.</p>
             @endif
 
-            <h5 class="mt-4">Students Joining</h5>
+
+            <h5 class="mt-4 fw-bold">Students Joining</h5>
             @if($proposal->students)
-                @foreach(json_decode($proposal->students, true) as $student)
-                    <div class="mb-2">
-                        <strong>Name:</strong> {{ $student['name'] ?? '-' }} |
-                        <strong>Matric No:</strong> {{ $student['matric'] ?? '-' }} |
-                        <strong>Email:</strong> {{ $student['email'] ?? '-' }} |
-                        <strong>Kulliyyah:</strong> {{ $student['kulliyyah'] ?? '-' }}
-                    </div>
-                @endforeach
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th><th>Matric No</th><th>Email</th><th>Kulliyyah</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(json_decode($proposal->students, true) as $student)
+                            <tr>
+                                <td>{{ $student['name'] ?? '-' }}</td>
+                                <td>{{ $student['matric_no'] ?? '-' }}</td>
+                                <td>{{ $student['email'] ?? '-' }}</td>
+                                <td>{{ $student['kulliyyah'] ?? '-' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             @else
                 <p class="text-muted">No students were listed.</p>
             @endif
-
 
             <h5 class="fw-bold mt-4 mb-3">Uploaded Documents</h5>
             @if($proposal->documents)

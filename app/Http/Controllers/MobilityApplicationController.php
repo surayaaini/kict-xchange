@@ -12,8 +12,12 @@ class MobilityApplicationController extends Controller
     public function create($proposal_id)
     {
         $proposal = Proposal::findOrFail($proposal_id);
-        return view('mobility_application.create', compact('proposal'));
+
+        return view('mobility.create', [
+            'proposal' => $proposal
+        ]);
     }
+
 
     public function store(Request $request)
     {
@@ -57,4 +61,26 @@ class MobilityApplicationController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Your mobility application has been submitted!');
     }
+
+    public function index()
+    {
+        $userEmail = Auth::user()->email;
+
+        // Get the latest approved proposal where student's email is included
+        $proposalToApply = Proposal::where('status', 'Approved')
+            ->whereNotNull('students')
+            ->get()
+            ->filter(function ($proposal) use ($userEmail) {
+                $students = json_decode($proposal->students, true);
+                foreach ($students as $student) {
+                    if (isset($student['email']) && $student['email'] === $userEmail) {
+                        return true;
+                    }
+                }
+                return false;
+            })->first();
+
+        return view('mobility.index', compact('proposalToApply'));
+    }
+
 }

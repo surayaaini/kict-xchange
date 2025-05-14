@@ -143,3 +143,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mobility/apply', [MobilityApplicationController::class, 'create'])->name('mobility.create');
     Route::post('/mobility/submit', [MobilityApplicationController::class, 'store'])->name('mobility.store');
 });
+
+Route::get('/mobility/apply/{proposal_id}', [MobilityApplicationController::class, 'create'])->name('mobility.create');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/mobility', [MobilityApplicationController::class, 'index'])->name('mobility.index');
+    Route::get('/mobility/create/{proposal_id}', [MobilityApplicationController::class, 'create'])->name('mobility.create');
+    Route::post('/mobility/store', [MobilityApplicationController::class, 'store'])->name('mobility.store');
+});

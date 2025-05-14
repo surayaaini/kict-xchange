@@ -1,8 +1,10 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="container my-4">
+<div class="container my-4 d-flex justify-content-center">
+    <div class="col-md-8 col-lg-7">
     <h4 class="mb-4 fw-bold">Mobility Application Form</h4>
+
 
     <!-- Progress bar -->
     <div class="progress mb-4">
@@ -39,6 +41,10 @@
                 <label>Upload Passport Copy</label>
                 <input type="file" name="passport_copy" class="form-control" accept="application/pdf,image/*">
             </div>
+            <div class="text-end">
+                <button type="button" class="btn btn-primary next-btn">Next</button>
+            </div>
+
         </div>
 
         <!-- Step 2: Emergency Contact Information -->
@@ -122,7 +128,7 @@
             <h5 class="fw-bold">6. Mobility Programme Information</h5>
             <div class="mb-3">
                 <label class="form-label">Host Institution</label>
-                <input type="text" class="form-control" name="host_institution" required>
+                <input type="text" class="form-control" name="host_institution" value="{{ $proposal->partner_university ?? '' }}" readonly>
             </div>
             <div class="mb-3">
                 <label class="form-label">Country</label>
@@ -130,11 +136,11 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Start Date</label>
-                <input type="date" class="form-control" name="mobility_start_date" required>
+                <input type="date" class="form-control" name="mobility_start_date" value="{{ $proposal->start_date ?? '' }}" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">End Date</label>
-                <input type="date" class="form-control" name="mobility_end_date" required>
+                <input type="date" class="form-control" name="mobility_end_date" value="{{ $proposal->end_date ?? '' }}" required>
             </div>
             <div class="text-end">
                 <button type="button" class="btn btn-secondary prev-btn">Previous</button>
@@ -153,6 +159,7 @@
                 <button type="button" class="btn btn-secondary prev-btn">Previous</button>
                 <button type="submit" class="btn btn-success">Submit Application</button>
             </div>
+
         </div>
 
     </form>
@@ -163,37 +170,55 @@
     let currentStep = 0;
     const steps = document.querySelectorAll('.form-step');
     const progressBar = document.getElementById('formProgress');
-    const nextBtn = document.getElementById('nextBtn');
-    const prevBtn = document.getElementById('prevBtn');
-    const submitBtn = document.getElementById('submitBtn');
 
-    function showStep(n) {
-        steps.forEach((step, index) => {
-            step.classList.toggle('active', index === n);
-        });
-        prevBtn.disabled = n === 0;
-        nextBtn.classList.toggle('d-none', n === steps.length - 1);
-        submitBtn.classList.toggle('d-none', n !== steps.length - 1);
-        progressBar.style.width = ((n + 1) / steps.length * 100) + '%';
-        progressBar.innerText = `Step ${n + 1} of ${steps.length}`;
+    function showStep(step) {
+        steps.forEach((s, i) => s.classList.toggle('active', i === step));
+        progressBar.style.width = `${((step + 1) / steps.length) * 100}%`;
+        progressBar.innerText = `Step ${step + 1} of ${steps.length}`;
     }
 
-    nextBtn.addEventListener('click', () => {
-        if (currentStep < steps.length - 1) {
-            currentStep++;
-            showStep(currentStep);
+    function validateStep(step) {
+        const inputs = steps[step].querySelectorAll('input, select, textarea');
+        for (const input of inputs) {
+            if (!input.checkValidity()) {
+                input.reportValidity();
+                return false;
+            }
         }
+        return true;
+    }
+
+    document.querySelectorAll('.next-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (validateStep(currentStep) && currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
     });
 
-    prevBtn.addEventListener('click', () => {
-        if (currentStep > 0) {
-            currentStep--;
-            showStep(currentStep);
-        }
+
+    document.querySelectorAll('.next-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+    });
+
+    document.querySelectorAll('.prev-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
     });
 
     showStep(currentStep);
 </script>
+
 
 <style>
     .form-step {

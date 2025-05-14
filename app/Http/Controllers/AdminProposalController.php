@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\ProposalApprovedNotification;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\MobilityApplicationPromptNotification;
+use App\Notifications\MobilityFormNotification;
 
 
 
@@ -42,11 +43,12 @@ class AdminProposalController extends Controller
                     $user = User::where('email', $student['email'])->first();
 
                     if ($user) {
-                        $user->notify(new MobilityApplicationPromptNotification($proposal->id));
+                        $user->notify(new MobilityFormNotification($proposal->id));
                     }
                 }
             }
         }
+
 
         return redirect()->back()->with('success', 'Proposal approved and notifications sent.');
     }
