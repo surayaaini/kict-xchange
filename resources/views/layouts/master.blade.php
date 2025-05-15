@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
 
     <meta charset="utf-8">
@@ -222,8 +223,8 @@
                                 <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
                                 <li><a href="{{ route('faq.index') }}">FAQ</a></li>
                                 <li><a href="{{ route('admin.proposal.index') }}">Proposals</a>                                </li>
-                                {{-- <li><a href="teacher-dashboard">Teacher Dashboard</a></li>
-                                <li><a href="student-dashboard">Student Dashboard</a></li> --}}
+                                <li><a href="teacher-dashboard">Teacher Dashboard</a></li>
+                                <li><a href="student-dashboard">Student Dashboard</a></li>
                             </ul>
                         </li>
                         @endif
@@ -237,6 +238,7 @@
                                 <li><a href="{{ route('about') }}">About</a></li>
                                 <li><a href="{{ route('mobility.index') }}">Mobility Programmes</a></li>
                                 <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
+                                <li><a href="student-dashboard">Student Dashboard</a></li>
                                 <li><a href="{{ route('posts.index') }}">Mobility Experience</a></li>
                                 <li><a href="{{ route('faq.index') }}">FAQ</a></li>
 
@@ -269,9 +271,11 @@
 
             @yield('content')
 
-            <footer>
-                <p>Copyright © 2025 MYKICT.</p>
-            </footer>
+            {{-- <footer class="footer text-center mt-4 mb-2">
+                <div class="container">
+                    <p class="text-muted small mb-0">COPYRIGHT © 2025 MYKICT.</p>
+                </div>
+            </footer> --}}
         </div>
     </div>
 
@@ -283,5 +287,6 @@
     <script src="{{ asset('assets/plugins/apexchart/chart-data.js') }}"></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
 </body>
+
 
 </html>

@@ -16,6 +16,57 @@
         </div>
     </div>
 
+    @if($proposal->mobilityApplications->count())
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="card-title">Student Applications</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Matric No</th>
+                            <th>Host University</th>
+                            <th>Application Dates</th>
+                            <th>Uploaded Docs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($proposal->mobilityApplications as $app)
+                            <tr>
+                                <td>{{ $app->full_name }}</td>
+                                <td>{{ $app->matric_no }}</td>
+                                <td>{{ $app->host_institution }}</td>
+                                <td>{{ $app->mobility_start_date }} - {{ $app->mobility_end_date }}</td>
+                                <td>
+                                    <ul>
+                                        @if($app->acceptance_letter)
+                                            <li><a href="{{ asset('storage/' . $app->acceptance_letter) }}" target="_blank">Acceptance Letter</a></li>
+                                        @endif
+                                        @if($app->proof_of_sponsorship)
+                                            <li><a href="{{ asset('storage/' . $app->proof_of_sponsorship) }}" target="_blank">Sponsorship</a></li>
+                                        @endif
+                                        @if($app->academic_transcript)
+                                            <li><a href="{{ asset('storage/' . $app->academic_transcript) }}" target="_blank">Transcript</a></li>
+                                        @endif
+                                        @if($app->insurance_document)
+                                            <li><a href="{{ asset('storage/' . $app->insurance_document) }}" target="_blank">Insurance</a></li>
+                                        @endif
+                                        @if($app->flight_ticket)
+                                            <li><a href="{{ asset('storage/' . $app->flight_ticket) }}" target="_blank">Flight Ticket</a></li>
+                                        @endif
+                                    </ul>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
+
     <!-- Proposal Details Card -->
     <div class="card shadow-sm border-0">
         <div class="card-body">

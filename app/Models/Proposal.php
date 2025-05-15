@@ -30,4 +30,10 @@ class Proposal extends Model
         'students' => 'array',
         'documents' => 'array',
     ];
+
+    public function mobilityApplications()
+    {
+        return $this->hasMany(MobilityApplication::class);
+    }
+
 }

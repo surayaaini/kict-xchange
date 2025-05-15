@@ -16,6 +16,8 @@ class ProposalController extends Controller
         return view('proposal.create', compact('moumoas'));
     }
 
+
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -29,7 +31,7 @@ class ProposalController extends Controller
             'documents.*' => 'nullable|file|mimes:pdf,doc,docx,png,jpg,jpeg',
         ]);
 
-        // Handle documents upload
+        // Upload documents
         $uploadedFiles = [];
         if ($request->hasfile('documents')) {
             foreach ($request->file('documents') as $file) {
@@ -38,6 +40,20 @@ class ProposalController extends Controller
             }
         }
 
+        $partnerNames = $request->partner_staff_name ?? [];
+        $partnerEmails = $request->partner_staff_email ?? [];
+        $partnerPositions = $request->partner_staff_position ?? [];
+
+        $responsibleStaff = [];
+        for ($i = 0; $i < count($partnerNames); $i++) {
+            $responsibleStaff[] = [
+                'name' => $partnerNames[$i] ?? '',
+                'email' => $partnerEmails[$i] ?? '',
+                'position' => $partnerPositions[$i] ?? '',
+            ];
+        }
+
+        // ✅ Create Proposal
         Proposal::create([
             'submitted_by_name' => Auth::user()->name,
             'submitted_by_email' => Auth::user()->email,
@@ -46,7 +62,8 @@ class ProposalController extends Controller
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'objective' => $validated['objective'],
-            'responsible_staff' => json_encode($request->partner_staff_name),
+            'responsible_staff' => json_encode($responsibleStaff),
+
             'lecturers' => json_encode(array_map(function ($name, $email, $phone) {
                 return [
                     'name' => $name,
@@ -63,6 +80,7 @@ class ProposalController extends Controller
                     'kulliyyah' => $kulliyyah,
                 ];
             }, $request->student_name ?? [], $request->student_matric ?? [], $request->student_email ?? [], $request->student_kulliyyah ?? [])),
+
             'documents' => json_encode($uploadedFiles),
             'status' => 'Pending',
         ]);
@@ -130,6 +148,20 @@ class ProposalController extends Controller
             }
         }
 
+        $names = $request->partner_staff_name ?? [];
+        $emails = $request->partner_staff_email ?? [];
+        $positions = $request->partner_staff_position ?? [];
+
+        $responsibleStaff = [];
+        for ($i = 0; $i < count($names); $i++) {
+            $responsibleStaff[] = [
+                'name' => $names[$i] ?? '',
+                'email' => $emails[$i] ?? '',
+                'position' => $positions[$i] ?? '',
+            ];
+        }
+
+        // ✅ Now update
         $proposal->update([
             'submitted_by_name' => $validated['submitted_by_name'],
             'submitted_by_email' => $validated['submitted_by_email'],
@@ -138,13 +170,8 @@ class ProposalController extends Controller
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'objective' => $validated['objective'],
-            'responsible_staff' => json_encode(array_map(function ($name, $email, $position) {
-                return [
-                    'name' => $name,
-                    'email' => $email,
-                    'position' => $position,
-                ];
-            }, $request->partner_staff_name ?? [], $request->partner_staff_email ?? [], $request->partner_staff_position ?? [])),
+            'responsible_staff' => json_encode($responsibleStaff),
+
             'lecturers' => json_encode(array_map(function ($name, $email, $phone) {
                 return [
                     'name' => $name,
@@ -152,6 +179,7 @@ class ProposalController extends Controller
                     'phone' => $phone,
                 ];
             }, $request->lecturer_name ?? [], $request->lecturer_email ?? [], $request->lecturer_phone ?? [])),
+
             'students' => json_encode(array_map(function ($name, $matric, $email, $kulliyyah) {
                 return [
                     'name' => $name,
@@ -160,12 +188,12 @@ class ProposalController extends Controller
                     'kulliyyah' => $kulliyyah,
                 ];
             }, $request->student_name ?? [], $request->student_matric ?? [], $request->student_email ?? [], $request->student_kulliyyah ?? [])),
+
             'documents' => count($uploadedFiles) > 0 ? json_encode($uploadedFiles) : $proposal->documents,
         ]);
 
         return redirect()->route('proposal.index')->with('success', 'Proposal updated successfully!');
     }
-
 
 
 

@@ -151,3 +151,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mobility/create/{proposal_id}', [MobilityApplicationController::class, 'create'])->name('mobility.create');
     Route::post('/mobility/store', [MobilityApplicationController::class, 'store'])->name('mobility.store');
 });
+
+Route::get('mobility/{id}/upload-documents', [MobilityApplicationController::class, 'showUploadForm'])->name('mobility.upload_form');
+Route::post('mobility/{id}/upload-documents', [MobilityApplicationController::class, 'uploadDocuments'])->name('mobility.upload_documents');
+
+Route::get('/mobility/upload-documents/{id}', [MobilityApplicationController::class, 'showUploadForm'])->name('mobility.showUploadForm');
+Route::post('/mobility/upload-documents', [App\Http\Controllers\MobilityApplicationController::class, 'uploadDocuments'])->name('mobility.uploadDocuments');
+Route::post('/mobility/upload-documents', [MobilityApplicationController::class, 'uploadDocuments'])->name('mobility.upload_documents');
+
+Route::get('/mobility/{id}', [MobilityApplicationController::class, 'show'])->name('mobility.show');
