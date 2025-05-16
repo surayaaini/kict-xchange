@@ -263,16 +263,16 @@ class MobilityApplicationController extends Controller
 
         // Notify student
         $app->user->notify(new MobilityApplicationDecisionNotification(
-            $app->admin_approval_status,
-            $app->admin_rejection_reason
+            $app,
+            $app->admin_approval_status
         ));
 
         // Notify staff who submitted the proposal (if exists)
         if ($app->proposal && $app->proposal->submitted_by_email) {
             Notification::route('mail', $app->proposal->submitted_by_email)
                 ->notify(new MobilityApplicationDecisionNotification(
-                    $app->admin_approval_status,
-                    $app->admin_rejection_reason
+                    $app,
+                    $app->admin_approval_status
                 ));
         }
 

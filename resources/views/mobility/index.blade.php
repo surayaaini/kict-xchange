@@ -47,7 +47,7 @@
                                 }
                             @endphp
 
-                            <div class="alert mt-3">
+                            <div class="alert {{ $bgColor }} mt-3">
                                 <strong>Application Submitted:</strong> {{ $statusText }}
                                 <a href="{{ route('mobility.show', $existingApp->id) }}" class="btn btn-sm btn-outline-dark ms-2">
                                     View Summary

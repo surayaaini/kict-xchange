@@ -161,13 +161,14 @@ Route::post('/mobility/upload-documents', [MobilityApplicationController::class,
 
 Route::get('/mobility/{id}', [MobilityApplicationController::class, 'show'])->name('mobility.show');
 Route::get('/mobility/upload-form/{id}', [MobilityApplicationController::class, 'showUploadForm'])->name('mobility.upload_form');
-Route::post('/mobility/{id}/approval', [MobilityApplicationController::class, 'handleApproval'])->name('mobility.approve_or_reject');
 
 
-// Admin decision routes
-Route::post('/mobility/{id}/approve', [MobilityApplicationController::class, 'handleApproval'])->name('mobility.approve');
-Route::post('/mobility/{id}/reject', [MobilityApplicationController::class, 'handleRejection'])->name('mobility.reject');
+Route::post('/mobility/{id}/approval', [MobilityApplicationController::class, 'handleApproval'])
+    ->name('mobility.approve_or_reject')
+    ->middleware(['auth', 'checkrole:admin']);
 
-Route::post('/admin/mobility/{id}/approval', [MobilityApplicationController::class, 'handleApproval'])
-    ->name('mobility.handleApproval')
-    ->middleware(['auth', 'role:admin']);
+
+
+Route::get('/test-role', function () {
+        return 'You are an admin!';
+    })->middleware(['auth', 'role:admin']);

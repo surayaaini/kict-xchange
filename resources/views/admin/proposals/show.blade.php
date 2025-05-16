@@ -154,108 +154,52 @@
                                 <td>
                                     <a href="{{ route('mobility.show', $app->id) }}" class="btn btn-sm btn-outline-dark">View Form</a>
                                 </td>
+                                <td>
+                                    {{-- If pending, show approval form --}}
+                                    @if ($app->admin_approval_status === 'pending')
+                                    <form action="{{ route('mobility.approve_or_reject', $app->id) }}" method="POST">
+                                        @csrf
+                                            <p class="small text-muted mb-1">Approval Statement:</p>
+                                            <div class="border p-2 small bg-light mb-2">
+                                                I hereby confirm that this student has gone through the rightful university selection procedures and recommend that the student is qualified to participate in the student exchange programme above.
+                                            </div>
 
+                                            <input type="text" name="admin_approver_name" class="form-control form-control-sm mb-2" placeholder="Dean/Deputy Dean Responsible" required>
+                                            <input type="date" name="admin_approval_date" class="form-control form-control-sm mb-2" value="{{ now()->toDateString() }}" required>
 
-                                @if ($app->admin_approval_status === 'pending')
-                                <form action="{{ route('mobility.handleApproval', $app->id) }}" method="POST" class="mt-3 border-top pt-3">
-                                    @csrf
-
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Dean/Deputy Dean Responsible</label>
-                                        <input type="text" name="admin_approver_name" class="form-control" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Date</label>
-                                        <input type="date" name="admin_approval_date" class="form-control" value="{{ now()->toDateString() }}" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Action</label>
-                                        <div>
-                                            <button type="submit" name="action" value="approve" class="btn btn-success me-2">
+                                            <button type="submit" name="action" value="approve" class="btn btn-sm btn-success me-1">
                                                 <i class="fas fa-check"></i> Approve
                                             </button>
 
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="collapse" data-bs-target="#rejectionForm-{{ $app->id }}">
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="collapse" data-bs-target="#rejectionForm-{{ $app->id }}">
                                                 <i class="fas fa-times"></i> Reject
                                             </button>
-                                        </div>
-                                    </div>
 
-                                    <div class="collapse mt-3" id="rejectionForm-{{ $app->id }}">
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">Reason for Rejection</label>
-                                            <textarea name="admin_rejection_reason" class="form-control" rows="3"></textarea>
-                                        </div>
-
-                                        <button type="submit" name="action" value="reject" class="btn btn-danger">
-                                            Confirm Rejection
-                                        </button>
-                                    </div>
-                                </form>
-                            @else
-                                <div class="mt-3">
-                                    <p><strong>Decision:</strong>
-                                        @if ($app->admin_approval_status === 'approved')
-                                            <span class="text-success">Approved</span>
-                                        @else
-                                            <span class="text-danger">Rejected</span>
-                                        @endif
-                                    </p>
-                                    @if ($app->admin_approver_name)
-                                        <p><strong>Approved/Reviewed By:</strong> {{ $app->admin_approver_name }}</p>
-                                    @endif
-                                    @if ($app->admin_approval_date)
-                                        <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($app->admin_approval_date)->format('d M Y') }}</p>
-                                    @endif
-                                    @if ($app->admin_rejection_reason)
-                                        <p><strong>Rejection Reason:</strong> {{ $app->admin_rejection_reason }}</p>
-                                    @endif
-                                </div>
-                            @endif
-
-
-
-                                <td>
-                                    @if ($app->admin_approval_status === 'pending')
-                                        <form action="{{ route('mobility.approve', $app->id) }}" method="POST" class="mb-2">
-                                            @csrf
-                                            <div class="mb-1 text-muted small">
-                                                Approval Statement:
-                                                <div class="border p-2 small bg-light">
-                                                    I hereby confirm that this student has gone through the rightful university selection procedures and recommend that the student is qualified to participate in the student exchange programme above.
-                                                </div>
+                                            <div class="collapse mt-2" id="rejectionForm-{{ $app->id }}">
+                                                <textarea name="admin_rejection_reason" class="form-control form-control-sm mb-2" rows="2" placeholder="Reason for rejection..."></textarea>
+                                                <button type="submit" name="action" value="reject" class="btn btn-sm btn-danger">
+                                                    Confirm Rejection
+                                                </button>
                                             </div>
-                                            <div class="mb-1">
-                                                <input type="text" name="admin_approver_name" class="form-control form-control-sm" placeholder="Dean/Deputy Dean Responsible" required>
-                                            </div>
-                                            <div class="mb-1">
-                                                <input type="date" name="admin_approval_date" class="form-control form-control-sm" required>
-                                            </div>
-                                            <button type="submit" class="btn btn-sm btn-success">Approve</button>
-                                        </form>
-
-                                        <form action="{{ route('mobility.reject', $app->id) }}" method="POST">
-                                            @csrf
-                                            <textarea name="admin_rejection_reason" class="form-control form-control-sm mb-1" rows="2" placeholder="Reason for rejection..." required></textarea>
-                                            <button type="submit" class="btn btn-sm btn-danger">Reject</button>
                                         </form>
                                     @else
-                                    <td>
-                                        @if ($app->admin_approval_status === 'approved')
-                                            <span class="badge bg-success">Approved</span>
-                                        @elseif ($app->admin_approval_status === 'rejected')
-                                            <span class="badge bg-danger">Rejected</span>
-                                        @else
-                                            <span class="badge bg-secondary">Pending</span>
+                                        <p><strong>Decision:</strong>
+                                            @if ($app->admin_approval_status === 'approved')
+                                                <span class="text-success">Approved</span>
+                                            @else
+                                                <span class="text-danger">Rejected</span>
+                                            @endif
+                                        </p>
+                                        <p><strong>By:</strong> {{ $app->admin_approver_name ?? '-' }}</p>
+                                        <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($app->admin_approval_date)->format('d M Y') }}</p>
+                                        @if ($app->admin_rejection_reason)
+                                            <p><strong>Reason:</strong> {{ $app->admin_rejection_reason }}</p>
                                         @endif
-                                    </td>
-
                                     @endif
                                 </td>
                             </tr>
-                        @endforeach
+                            @endforeach
+
                     </tbody>
                 </table>
             </div>

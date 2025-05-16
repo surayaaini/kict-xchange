@@ -281,7 +281,7 @@
                 Please download and sign the <a href="{{ asset('assets/docs/Letter_of_Indemnity.docx') }}" download>Letter of Indemnity</a> before uploading:
             </p>
             <div class="mb-3">
-                <label>Upload Signed Letter of Indemnity</label>
+                <label>Upload Signed Letter of Indemnity (in PDF)</label>
                 <input type="file" name="indemnity_file" class="form-control" required>
             </div>
 

@@ -110,8 +110,8 @@
         </div>
         <button type="button" class="btn btn-sm btn-outline-primary mb-4" onclick="addLecturerRow()">+ Add Another Lecturer</button>
 
-        <!-- Students Joining (Optional) -->
-        <h5 class="fw-bold mb-3">Students Joining (Optional)</h5>
+        <!-- Students Joining-->
+        <h5 class="fw-bold mb-3">Students Joining</h5>
         <div id="student-section">
             <div class="row mb-3 align-items-end">
                 <div class="col">
