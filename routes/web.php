@@ -160,3 +160,4 @@ Route::post('/mobility/upload-documents', [App\Http\Controllers\MobilityApplicat
 Route::post('/mobility/upload-documents', [MobilityApplicationController::class, 'uploadDocuments'])->name('mobility.upload_documents');
 
 Route::get('/mobility/{id}', [MobilityApplicationController::class, 'show'])->name('mobility.show');
+Route::get('/mobility/upload-form/{id}', [MobilityApplicationController::class, 'showUploadForm'])->name('mobility.upload_form');

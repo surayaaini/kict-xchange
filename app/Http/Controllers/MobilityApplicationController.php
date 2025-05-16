@@ -221,11 +221,7 @@ class MobilityApplicationController extends Controller
     }
 
 
-    public function showUploadForm($id)
-    {
-        $application = MobilityApplication::findOrFail($id);
-        return view('mobility.upload_documents', compact('application'));
-    }
+
 
     public function show($id)
     {
@@ -233,6 +229,13 @@ class MobilityApplicationController extends Controller
 
         return view('mobility.show', compact('application'));
     }
+
+    public function showUploadForm($id)
+    {
+        $application = MobilityApplication::findOrFail($id);
+        return view('mobility.upload_form', compact('application'));
+    }
+
 
 
 }
