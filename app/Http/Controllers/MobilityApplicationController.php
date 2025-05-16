@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Notifications\NewMobilityApplicationSubmitted;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\MobilityApplicationDecisionNotification;
+use Illuminate\Support\Facades\Notification;
+
+
 
 
 class MobilityApplicationController extends Controller
@@ -217,6 +221,7 @@ class MobilityApplicationController extends Controller
 
         $app->save();
 
+
         return redirect()->back()->with('success', 'Documents uploaded successfully.');
     }
 
@@ -234,6 +239,64 @@ class MobilityApplicationController extends Controller
     {
         $application = MobilityApplication::findOrFail($id);
         return view('mobility.upload_form', compact('application'));
+    }
+
+
+
+    public function handleApproval(Request $request, $id)
+    {
+        $app = MobilityApplication::with('proposal')->findOrFail($id);
+
+        if ($request->input('action') === 'approve') {
+            $app->admin_approval_status = 'approved';
+            $app->admin_approver_name = $request->input('admin_approver_name');
+            $app->admin_approval_date = $request->input('admin_approval_date');
+            $app->admin_rejection_reason = null;
+        } elseif ($request->input('action') === 'reject') {
+            $app->admin_approval_status = 'rejected';
+            $app->admin_approver_name = $request->input('admin_approver_name');
+            $app->admin_approval_date = $request->input('admin_approval_date');
+            $app->admin_rejection_reason = $request->input('admin_rejection_reason');
+        }
+
+        $app->save();
+
+        // Notify student
+        $app->user->notify(new MobilityApplicationDecisionNotification(
+            $app->admin_approval_status,
+            $app->admin_rejection_reason
+        ));
+
+        // Notify staff who submitted the proposal (if exists)
+        if ($app->proposal && $app->proposal->submitted_by_email) {
+            Notification::route('mail', $app->proposal->submitted_by_email)
+                ->notify(new MobilityApplicationDecisionNotification(
+                    $app->admin_approval_status,
+                    $app->admin_rejection_reason
+                ));
+        }
+
+        return back()->with('success', 'Decision has been recorded and notifications sent.');
+    }
+
+    public function handleRejection(Request $request, $id)
+    {
+        $request->validate([
+            'admin_rejection_reason' => 'required|string',
+        ]);
+
+        $app = MobilityApplication::findOrFail($id);
+        $app->admin_approval_status = 'rejected';
+        $app->admin_rejection_reason = $request->admin_rejection_reason;
+        $app->save();
+
+        $student = $app->user;
+        $staffEmails = [$app->proposal->submitted_by_email];
+        $staffUsers = User::whereIn('email', (array) $staffEmails)->get();
+
+        Notification::send([$student, ...$staffUsers], new MobilityApplicationDecisionNotification($app, 'rejected'));
+
+        return back()->with('success', 'Application rejected and user notified.');
     }
 
 

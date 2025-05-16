@@ -54,4 +54,14 @@ class MobilityApplication extends Model
         'student_declaration_date',
         'indemnity_file',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function proposal()
+    {
+        return $this->belongsTo(Proposal::class, 'proposal_id');
+    }
 }

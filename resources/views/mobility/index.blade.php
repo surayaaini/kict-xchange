@@ -30,13 +30,32 @@
 
                 @if ($existingApp)
                     <div class="alert alert-info mt-3">
-                        <strong>Application Submitted:</strong> Your mobility application has been submitted.
-                        <a href="{{ route('mobility.show', $existingApp->id) }}" class="btn btn-sm btn-outline-dark ms-2">
-                            View Summary
-                        </a>
-                        <a href="{{ route('mobility.upload_form', $existingApp->id) }}" class="btn btn-sm btn-outline-primary ms-2">
-                            Upload Additional Documents
-                        </a>
+                                @php
+                                $status = $existingApp->admin_approval_status;
+                                $statusText = 'Your mobility application has been submitted.';
+                                $bgColor = 'alert-success';
+
+                                if ($status === 'approved') {
+                                    $statusText .= ' It has been approved by DDAI.';
+                                    $bgColor = 'alert-success';
+                                } elseif ($status === 'rejected') {
+                                    $statusText .= ' Unfortunately, it has been rejected.';
+                                    $bgColor = 'alert-danger';
+                                } elseif ($status === 'pending') {
+                                    $statusText .= ' It is currently under review by DDAI.';
+                                    $bgColor = 'alert-warning';
+                                }
+                            @endphp
+
+                            <div class="alert mt-3">
+                                <strong>Application Submitted:</strong> {{ $statusText }}
+                                <a href="{{ route('mobility.show', $existingApp->id) }}" class="btn btn-sm btn-outline-dark ms-2">
+                                    View Summary
+                                </a>
+                                <a href="{{ route('mobility.upload_form', $existingApp->id) }}" class="btn btn-sm btn-outline-primary ms-2">
+                                    Upload Additional Documents
+                                </a>
+                            </div>
                     </div>
                 @else
                     <a href="{{ route('mobility.create', $proposal->id) }}" class="btn btn-primary mt-2">Fill Application Form</a>

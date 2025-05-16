@@ -191,7 +191,7 @@
                                 </p>
                             </div>
                         </div>
-                        <a class="dropdown-item" href="{{ route('profile.show') }}">My Profile</a>
+                        {{-- <a class="dropdown-item" href="{{ route('profile.show') }}">My Profile</a> --}}
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

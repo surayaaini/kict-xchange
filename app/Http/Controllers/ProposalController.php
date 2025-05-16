@@ -17,7 +17,6 @@ class ProposalController extends Controller
     }
 
 
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -103,7 +102,7 @@ class ProposalController extends Controller
 
     public function show($id)
     {
-        $proposal = Proposal::findOrFail($id);
+        $proposal = Proposal::with('mobilityApplications.user')->findOrFail($id);
 
         return view('proposal.show', compact('proposal'));
     }
