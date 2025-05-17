@@ -8,7 +8,7 @@ use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\AdminProposalController;
 use App\Http\Controllers\MobilityApplicationController;
-
+use App\Http\Middleware\RoleMiddleware;
 
 
 
@@ -115,7 +115,7 @@ Route::put('/proposal/{id}', [ProposalController::class, 'update'])->name('propo
 
 // Admin Proposal Routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/proposals', [App\Http\Controllers\AdminProposalController::class, 'index'])->name('admin.proposal.index');
+    Route::get('/admin/proposals', [App\Http\Controllers\AdminProposalController::class, 'index'])->name('admin.proposals.index');
     Route::get('/admin/proposals/{id}/approve', [App\Http\Controllers\AdminProposalController::class, 'approve'])->name('admin.proposal.approve');
     Route::get('/admin/proposals/{id}/reject', [App\Http\Controllers\AdminProposalController::class, 'reject'])->name('admin.proposal.reject');
     Route::get('/admin/proposals/{id}', [AdminProposalController::class, 'show'])->name('admin.proposals.show');
@@ -162,13 +162,6 @@ Route::post('/mobility/upload-documents', [MobilityApplicationController::class,
 Route::get('/mobility/{id}', [MobilityApplicationController::class, 'show'])->name('mobility.show');
 Route::get('/mobility/upload-form/{id}', [MobilityApplicationController::class, 'showUploadForm'])->name('mobility.upload_form');
 
-
 Route::post('/mobility/{id}/approval', [MobilityApplicationController::class, 'handleApproval'])
-    ->name('mobility.approve_or_reject')
-    ->middleware(['auth', 'checkrole:admin']);
-
-
-
-Route::get('/test-role', function () {
-        return 'You are an admin!';
-    })->middleware(['auth', 'role:admin']);
+    ->name('mobility.handleApproval');
+    // ->middleware(['auth', 'role:admin']);

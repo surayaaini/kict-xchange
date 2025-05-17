@@ -11,7 +11,7 @@
                     <h3 class="page-title">View Proposal Details</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admin.proposal.index') }}">Proposals</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.proposals.index') }}">Proposals</a></li>
                         <li class="breadcrumb-item active">View Proposal</li>
                     </ul>
                 </div>
@@ -115,7 +115,7 @@
             @endif
 
             <div class="mt-4">
-                <a href="{{ route('admin.proposal.index') }}" class="btn btn-outline-secondary">Back to Proposals List</a>
+                <a href="{{ route('admin.proposals.index') }}" class="btn btn-outline-secondary">Back to Proposals List</a>
             </div>
         </div>
     </div>
@@ -157,7 +157,7 @@
                                 <td>
                                     {{-- If pending, show approval form --}}
                                     @if ($app->admin_approval_status === 'pending')
-                                    <form action="{{ route('mobility.approve_or_reject', $app->id) }}" method="POST">
+                                    <form action="{{ route('mobility.handleApproval', $app->id) }}" method="POST">
                                         @csrf
                                             <p class="small text-muted mb-1">Approval Statement:</p>
                                             <div class="border p-2 small bg-light mb-2">
