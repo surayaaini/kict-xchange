@@ -222,7 +222,8 @@
                                 <li><a href="{{ route('admin.dashboard') }}">Admin Dashboard</a></li>
                                 <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
                                 <li><a href="{{ route('faq.index') }}">FAQ</a></li>
-                                <li><a href="{{ route('admin.proposals.index') }}">Proposals</a>                                </li>
+                                <li><a href="{{ route('admin.proposals.index') }}">Proposals</a></li>
+                                <li><a href="{{ route('inbounds.index') }}">Inbound Student</a></li> 
                                 <li><a href="teacher-dashboard">Teacher Dashboard</a></li>
                                 <li><a href="student-dashboard">Student Dashboard</a></li>
                             </ul>

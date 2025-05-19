@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('program');
             $table->string('program_type');
             $table->string('responsible_lecturer');
-            $table->string('duration'); // e.g. "1 semester"
+            $table->unsignedInteger('duration_value');
+            $table->string('duration_unit');
             $table->string('received_date');
             $table->string('departure_date');
             $table->timestamps();

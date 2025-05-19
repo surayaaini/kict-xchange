@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\AdminProposalController;
 use App\Http\Controllers\MobilityApplicationController;
+use App\Http\Controllers\InboundStudentController;
 use App\Http\Middleware\RoleMiddleware;
 
 
@@ -165,3 +166,10 @@ Route::get('/mobility/upload-form/{id}', [MobilityApplicationController::class, 
 Route::post('/mobility/{id}/approval', [MobilityApplicationController::class, 'handleApproval'])
     ->name('mobility.handleApproval');
     // ->middleware(['auth', 'role:admin']);
+
+Route::get('/inbound_student', [InboundStudentController::class, 'index'])->name('inbounds.index');
+Route::get('/inbound_student/create', [InboundStudentController::class, 'create'])->name('inbounds.create');
+Route::post('/inbound_student', [InboundStudentController::class, 'store'])->name('inbounds.store');
+Route::delete('/inbound_student/{id}', [InboundStudentController::class, 'destroy'])->name('inbounds.destroy');
+Route::get('/inbound/import', [InboundStudentController::class, 'showImportForm'])->name('inbounds.import.form');
+Route::post('/inbound/import', [InboundStudentController::class, 'importExcel'])->name('inbounds.import');

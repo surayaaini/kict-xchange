@@ -34,9 +34,6 @@ class MouMoaController extends Controller
         return view('moumoa.index', compact('moumoas'));
     }
 
-
-
-
     public function create()
     {
         return view('moumoa.create'); // Admin-only form
