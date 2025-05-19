@@ -196,4 +196,10 @@ class InboundStudentController extends Controller
 
         return redirect()->route('inbounds.index')->with('success', 'Inbound student deleted successfully.');
     }
+
+    public function dashboard()
+    {
+        $inboundStudentCount = InboundStudent::count();
+        return view('admin.admin-dashboard', compact('inboundStudentCount'));
+    }
 }

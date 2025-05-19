@@ -173,3 +173,4 @@ Route::post('/inbound_student', [InboundStudentController::class, 'store'])->nam
 Route::delete('/inbound_student/{id}', [InboundStudentController::class, 'destroy'])->name('inbounds.destroy');
 Route::get('/inbound/import', [InboundStudentController::class, 'showImportForm'])->name('inbounds.import.form');
 Route::post('/inbound/import', [InboundStudentController::class, 'importExcel'])->name('inbounds.import');
+Route::get('/admin-dashboard', [InboundStudentController::class, 'dashboard'])->name('admin.dashboard');
