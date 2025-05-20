@@ -45,7 +45,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return redirect()->to(route('student.dashboard', [], false) . '#My-Posts-Card') ->with('success', 'Post submitted successfully and pending approval!');
+        return redirect()->to(route('posts.index', [], false) . '#My-Posts-Card') ->with('success', 'Post submitted successfully and pending approval!');
     }
 
 
@@ -63,14 +63,6 @@ class PostController extends Controller
                 ->firstOrFail();
 
         return view('experience.full-post', compact('post'));
-    }
-
-    public function studentDashboard()
-    {
-        // Assuming you have user authentication
-        $posts = Post::where('user_id', auth()->id())->latest()->get();
-
-        return view('admin.student-dashboard', compact('posts'));
     }
 
 }
