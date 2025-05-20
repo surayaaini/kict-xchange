@@ -15,9 +15,30 @@ use App\Http\Middleware\RoleMiddleware;
 
 Route::get('/mou-moa', [MouMoaController::class, 'index'])->name('moumoa.index');
 
+// Route::get('/', function () {
+//     return view('auth.login');
+// });
+
 Route::get('/', function () {
-    return view('auth.login');
+    return view('landing');
 });
+
+Route::get('/redirect-after-login', function () {
+    $user = auth()->user();
+
+    if ($user->role_id == 1) {
+        return redirect()->route('admin.dashboard');
+    } elseif ($user->role_id == 2) {
+        return redirect()->route('mobility.index');
+    } else {
+        return redirect('/dashboard');
+    }
+});
+
+Route::get('/admin/dashboard', function () {
+    return view('admin.admin-dashboard');
+})->middleware(['auth'])->name('admin.dashboard');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/mou-moa', [MouMoaController::class, 'index'])->name('moumoa.index'); // View list (all users)
