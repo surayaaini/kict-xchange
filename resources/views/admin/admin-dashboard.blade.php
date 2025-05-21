@@ -20,13 +20,16 @@
         </div>
 
         <div class="row">
+            {{-- Student Mobility Application --}}
             <div class="col-xl-3 col-sm-6 col-12 d-flex">
                 <div class="card bg-comman w-100">
                     <div class="card-body">
                         <div class="db-widgets d-flex justify-content-between align-items-center">
                             <div class="db-info">
-                                <li><a href="{{ route('proposal.index') }}"><h6>Student Mobility Application</h6></a></li>
-                                <h3>206</h3>
+                                <a href="{{ route('proposal.index') }}">
+                                    <h6>Student Mobility Application</h6>
+                                    <h3>{{ $mobilityApplicationCount }}</h3>
+                                </a>
                             </div>
                             <div class="db-icon">
                                 <img src="{{ asset('assets/img/icons/dash-icon-01.svg') }}" alt="Dashboard Icon">
@@ -35,13 +38,18 @@
                     </div>
                 </div>
             </div>
+
+
+            {{-- Total Mobility Proposal --}}
             <div class="col-xl-3 col-sm-6 col-12 d-flex">
                 <div class="card bg-comman w-100">
                     <div class="card-body">
                         <div class="db-widgets d-flex justify-content-between align-items-center">
                             <div class="db-info">
-                                <li><a href="{{ route('proposal.index') }}"><h6>Total Mobility Proposal</h6></a></li>
-                                <h3>7</h3>
+                                <a href="{{ route('proposal.index') }}">
+                                    <h6>Total Mobility Proposal</h6>
+                                    <h3>{{ $proposalCount }}</h3>
+                                </a>
                             </div>
                             <div class="db-icon">
                                 <img src="{{ asset('assets/img/icons/dash-icon-02.svg') }}" alt="Dashboard Icon">
@@ -50,13 +58,18 @@
                     </div>
                 </div>
             </div>
+
+
+            {{-- Partnerships (MOU/MOA) --}}
             <div class="col-xl-3 col-sm-6 col-12 d-flex">
                 <div class="card bg-comman w-100">
                     <div class="card-body">
                         <div class="db-widgets d-flex justify-content-between align-items-center">
                             <div class="db-info">
-                                <li><a href="{{ route('moumoa.index') }}"><h6>Partnerships (MOU/MOA)</h6></a></li>
-                                <h3>30+</h3>
+                                <a href="{{ route('moumoa.index') }}">
+                                    <h6>Partnerships (MOU/MOA)</h6>
+                                    <h3>{{ $moumoaCount }}</h3>
+                                </a>
                             </div>
                             <div class="db-icon">
                                 <img src="{{ asset('assets/img/icons/dash-icon-03.svg') }}" alt="Dashboard Icon">
@@ -91,67 +104,49 @@
             <div class="col-12 col-lg-12 col-xl-12 d-flex">
                 <div class="card flex-fill comman-shadow">
                     <div class="card-header d-flex align-items-center">
-                        <h5 class="card-title">Mobility Proposal Applications (Outbound)</h5>
+                        <h5 class="card-title">Mobility Proposals (Outbound)</h5>
                         <ul class="chart-list-out student-ellips">
                             <li class="lesson-view-all"><a href="#">View All</a></li>
-                            <li class="star-menus"><a href="javascript:;"><i class="fas fa-ellipsis-v"></i></a>
-                            </li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="teaching-card">
                             <ul class="steps-history">
-                                <li>17 July - 4 August 2025</li>
-                                <li>28 May - 6 June 2025</li>
-                                <li>2 March - 1 April 2025</li>
+
+                                @foreach ($latestProposals as $proposal)
+                                    <li>
+                                        {{ \Carbon\Carbon::parse($proposal->start_date)->format('d M Y') }}
+                                        -
+                                        {{ \Carbon\Carbon::parse($proposal->end_date)->format('d M Y') }}
+                                    </li>
+                                @endforeach
                             </ul>
+
                             <ul class="activity-feed">
-                                <li class="feed-item d-flex align-items-center">
-                                    <div class="dolor-activity">
-                                        <span class="feed-text1"><a>Java Odyssey: Sharing, Training and Beyond</a></span>
-                                        <ul class="teacher-date-list">
-                                            <li><i class="fas fa-calendar-alt me-2"></i>Ts. Dr. Dini Oktarina Dwi Handayani</li>
-                                            <li>|</li>
-                                            <li><i class="fas fa-clock me-2"></i>10 March 2025
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="activity-btns ms-auto">
-                                        <button type="submit" class="btn btn-info">Details</button>
-                                        <button type="submit" class="btn btn-info">In Progress</button>
-                                    </div>
-                                </li>
-                                <li class="feed-item d-flex align-items-center">
-                                    <div class="dolor-activity">
-                                        <span class="feed-text1"><a>Egypt Summer School </a></span>
-                                        <ul class="teacher-date-list">
-                                            <li><i class="fas fa-calendar-alt me-2"></i>Dr. Lili Marziana Bt. Abdullah</li>
-                                            <li>|</li>
-                                            <li><i class="fas fa-clock me-2"></i>September 5, 2022
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="activity-btns complete ms-auto">
-                                        <button type="submit" class="btn btn-info">Details</button>
-                                        <button type="submit" class="btn btn-info">Approved</button>
-                                    </div>
-                                </li>
-                                <li class="feed-item d-flex align-items-center">
-                                    <div class="dolor-activity">
-                                        <span class="feed-text1"><a>Mobility to Indonesia: Integrated Agriculture Technologies</a></span>
-                                        <ul class="teacher-date-list">
-                                            <li><i class="fas fa-calendar-alt me-2"></i>Dr. Mohd Khairul Azmi Bin Hassan</li>
-                                            <li>|</li>
-                                            <li><i class="fas fa-clock me-2"></i>September 5, 2022
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="activity-btns ms-auto">
-                                        <button type="submit" class="btn btn-info">Details</button>
-                                        <button type="submit" class="btn btn-info">Approved</button>
-                                    </div>
-                                </li>
+                                @foreach ($latestProposals as $proposal)
+                                    <li class="feed-item d-flex align-items-center">
+                                        <div class="dolor-activity">
+                                            <span class="feed-text1">
+                                                <a href="{{ route('proposal.show', $proposal->id) }}">{{ $proposal->partner_university }}</a>
+                                            </span>
+                                            <ul class="teacher-date-list">
+                                                <li>
+                                                    <i class="fas fa-calendar-alt me-2"></i>
+                                                    {{ $proposal->submitted_by_name }}
+                                                </li>
+                                                <li>|</li>
+                                                <li>{{ $proposal->submitted_by_email }}</li>
+                                            </ul>
+
+                                        </div>
+                                        <div class="activity-btns ms-auto">
+                                            <a href="{{ route('proposal.show', $proposal->id) }}" class="btn btn-info">Details</a>
+                                            <a href="{{ route('proposal.index') }}" class="btn btn-info">Approval</a>
+                                        </div>
+                                    </li>
+                                @endforeach
                             </ul>
+
                         </div>
                     </div>
                 </div>

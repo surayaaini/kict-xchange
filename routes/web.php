@@ -10,14 +10,12 @@ use App\Http\Controllers\AdminProposalController;
 use App\Http\Controllers\MobilityApplicationController;
 use App\Http\Controllers\InboundStudentController;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\AdminDashboardController;
 
 
 
 Route::get('/mou-moa', [MouMoaController::class, 'index'])->name('moumoa.index');
 
-// Route::get('/', function () {
-//     return view('auth.login');
-// });
 
 Route::get('/', function () {
     return view('landing');
@@ -35,55 +33,20 @@ Route::get('/redirect-after-login', function () {
     }
 });
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.admin-dashboard');
-})->middleware(['auth'])->name('admin.dashboard');
-
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/mou-moa', [MouMoaController::class, 'index'])->name('moumoa.index'); // View list (all users)
-});
-// Route::middleware(['auth', 'role:admin'])->group(function () {
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
-});
-
-Route::middleware(['auth'])->group(function () {
-    Route::resource('faqs', FaqController::class);
-    Route::get('/admin/faqs', [FaqController::class, 'admin'])->name('faq.admin');
-});
-
-Route::get('/faq/create', [FaqController::class, 'create'])->name('faq.create');
-Route::post('/faq', [FaqController::class, 'store'])->name('faq.store');
-
-
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/mou-moa/create', [MouMoaController::class, 'create'])->name('moumoa.create');
-    Route::post('/mou-moa', [MouMoaController::class, 'store'])->name('moumoa.store');
-    Route::get('/mou-moa/{id}/edit', [MouMoaController::class, 'edit'])->name('moumoa.edit');
-    Route::put('/mou-moa/{id}', [MouMoaController::class, 'update'])->name('moumoa.update');
-    Route::delete('/mou-moa/{id}', [MouMoaController::class, 'destroy'])->name('moumoa.destroy');
-    Route::delete('/moumoa/{id}', [MouMoaController::class, 'destroy'])->name('moumoa.destroy');
-
-});
-
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    // Set welcome-dashboard as the main dashboard
     Route::get('/dashboard', function () {
         return view('admin/welcome-dashboard');
     })->name('dashboard');
 
     // Route for admin dashboard
-    //Route::get('admin-dashboard', function () {
-     //   return view('admin/admin-dashboard');
-    //})->name('admin.dashboard');
+    // Route::get('admin-dashboard', function () {
+    //    return view('admin/admin-dashboard');
+    // })->name('admin.dashboard');
 
     // Route for teacher dashboard
     Route::get('teacher-dashboard', function () {
@@ -102,6 +65,36 @@ Route::middleware([
 
 });
 
+
+
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mou-moa', [MouMoaController::class, 'index'])->name('moumoa.index');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('faqs', FaqController::class);
+    Route::get('/admin/faqs', [FaqController::class, 'admin'])->name('faq.admin');
+});
+
+Route::get('/faq/create', [FaqController::class, 'create'])->name('faq.create');
+Route::post('/faq', [FaqController::class, 'store'])->name('faq.store');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mou-moa/create', [MouMoaController::class, 'create'])->name('moumoa.create');
+    Route::post('/mou-moa', [MouMoaController::class, 'store'])->name('moumoa.store');
+    Route::get('/mou-moa/{id}/edit', [MouMoaController::class, 'edit'])->name('moumoa.edit');
+    Route::put('/mou-moa/{id}', [MouMoaController::class, 'update'])->name('moumoa.update');
+    Route::delete('/mou-moa/{id}', [MouMoaController::class, 'destroy'])->name('moumoa.destroy');
+    Route::delete('/moumoa/{id}', [MouMoaController::class, 'destroy'])->name('moumoa.destroy');
+
+});
+
 Route::get('/create', [PostController::class, 'create'])->name('posts.create');
 Route::post('/submit', [PostController::class, 'store'])->name('posts.store');
 Route::get('/index', [PostController::class, 'index'])->name('posts.index');
@@ -109,7 +102,7 @@ Route::get('/posts/full/{id}', [PostController::class, 'fullpost'])->name('posts
 Route::get('/student-dashboard', [PostController::class, 'studentdashboard'])->name('student.dashboard');
 
 
-Route::get('/admin-dashboard', [AdminPostController::class, 'admindashboard'])->name('admin.dashboard');
+// Route::get('/admin-dashboard', [AdminPostController::class, 'admindashboard'])->name('admin.dashboard');
 Route::get('/posts', [AdminPostController::class, 'history'])->name('posts.post.history');
 Route::get('/posts/{id}', [AdminPostController::class, 'show'])->name('posts.show');
 Route::patch('/posts/{id}/approve', [AdminPostController::class, 'approve'])->name('posts.approve');
@@ -194,4 +187,4 @@ Route::post('/inbound_student', [InboundStudentController::class, 'store'])->nam
 Route::delete('/inbound_student/{id}', [InboundStudentController::class, 'destroy'])->name('inbounds.destroy');
 Route::get('/inbound/import', [InboundStudentController::class, 'showImportForm'])->name('inbounds.import.form');
 Route::post('/inbound/import', [InboundStudentController::class, 'importExcel'])->name('inbounds.import');
-Route::get('/admin-dashboard', [InboundStudentController::class, 'dashboard'])->name('admin.dashboard');
+// Route::get('/admin-dashboard', [InboundStudentController::class, 'dashboard'])->name('admin.dashboard');

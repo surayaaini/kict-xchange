@@ -37,6 +37,7 @@
 <body>
 
     <div class="login-box">
+        {{-- <img src="{{ asset('assets/img/logokict.png') }}" alt="KICT Logo"> --}}
         {{ $slot }}
     </div>
 

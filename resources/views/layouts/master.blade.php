@@ -224,6 +224,7 @@
                                 <li><a href="{{ route('faq.index') }}">FAQ</a></li>
                                 <li><a href="{{ route('admin.proposals.index') }}">Proposals</a></li>
                                 <li><a href="{{ route('inbounds.index') }}">Inbound Student</a></li>
+
                             </ul>
                         </li>
                         @endif
