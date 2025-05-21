@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\MobilityApplication;
 use App\Models\Proposal;
 use App\Models\MouMoa;
+use App\Models\InboundStudent;
+
 
 class AdminDashboardController extends Controller
 {
@@ -15,6 +17,8 @@ class AdminDashboardController extends Controller
         $mobilityApplicationCount = \App\Models\MobilityApplication::count();
         $proposalCount = Proposal::count();
         $moumoaCount = \App\Models\MouMoa::count();
+        $inboundStudentCount = InboundStudent::count();
+
 
         $latestProposals = Proposal::orderBy('created_at', 'desc')->take(5)->get(); // Get latest 5 proposals
 
@@ -22,7 +26,8 @@ class AdminDashboardController extends Controller
             'mobilityApplicationCount',
             'proposalCount',
             'moumoaCount',
-            'latestProposals'
+            'latestProposals',
+            'inboundStudentCount'
         ));
     }
 

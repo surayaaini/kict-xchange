@@ -86,7 +86,7 @@
                             <div class="db-widgets d-flex justify-content-between align-items-center">
                                 <div class="db-info">
                                     <h6 >Inbound Students</h6>
-                                    {{-- <h3>{{ $inboundStudentCount }}</h3> Dynamic Count --}}
+                                    <h3>{{ $inboundStudentCount }}</h3>
                                 </div>
                                 <div class="db-icon">
                                     <img src="{{ asset('assets/img/icons/dash-icon-01.svg') }}" alt="Dashboard Icon">
