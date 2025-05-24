@@ -234,7 +234,6 @@
                                 <li><a href="{{ route('about') }}">About</a></li>
                                 <li><a href="{{ route('mobility.index') }}">Mobility Programmes</a></li>
                                 <li><a href="{{ route('moumoa.index') }}">MOU/MOA List</a></li>
-                                <li><a href="student-dashboard">Student Dashboard</a></li>
                                 <li><a href="{{ route('posts.index') }}">Mobility Experience</a></li>
                                 <li><a href="{{ route('faq.index') }}">FAQ</a></li>
 

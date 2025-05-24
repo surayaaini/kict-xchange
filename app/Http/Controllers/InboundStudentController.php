@@ -79,7 +79,7 @@ class InboundStudentController extends Controller
             'received_date' => $request->input('received_date'),
             'departure_date' => $request->input('departure_date'),
         ]);
-        
+
 
         return redirect()->route('inbounds.index')->with('success', 'Inbound student added successfully.');
     }
@@ -109,24 +109,24 @@ class InboundStudentController extends Controller
         $request->validate([
             'excel_file' => 'required|file|mimes:xlsx,xls',
         ]);
-    
+
         $file = $request->file('excel_file');
-    
+
         try {
             $spreadsheet = IOFactory::load($file->getPathname());
             $sheet = $spreadsheet->getActiveSheet();
             $rows = $sheet->toArray();
-    
+
             // Skip header row
             foreach (array_slice($rows, 1) as $row) {
                 if (empty($row[0])) {
                     continue; // skip if no full name
                 }
-    
+
                 // Safe date parsing
                 $receivedDate = $this->parseDate($row[7]);
                 $departureDate = $this->parseDate($row[8]);
-    
+
                 InboundStudent::create([
                     'full_name'             => $row[0],
                     'university_origin'     => $row[1],
@@ -139,9 +139,9 @@ class InboundStudentController extends Controller
                     'departure_date'        => $departureDate,
                 ]);
             }
-    
+
             return redirect()->route('inbounds.index')->with('success', 'Inbound students imported successfully.');
-    
+
         } catch (\Throwable $e) {
             return back()->with('error', 'Import failed: ' . $e->getMessage());
         }
@@ -197,9 +197,5 @@ class InboundStudentController extends Controller
         return redirect()->route('inbounds.index')->with('success', 'Inbound student deleted successfully.');
     }
 
-    public function dashboard()
-    {
-        $inboundStudentCount = InboundStudent::count();
-        return view('admin.admin-dashboard', compact('inboundStudentCount'));
-    }
+
 }
