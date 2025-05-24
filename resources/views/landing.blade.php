@@ -42,15 +42,18 @@
             Welcome to MYKICT
         </h3>
         <p style="margin: 20px auto 0; font-size: 1.5rem; font-style: italic; max-width: 600px; color: #f8f9fa; background: rgba(0, 0, 0, 0.5); padding: 10px 20px; border-radius: 10px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); text-align: center;">
-            {{-- "Codes to Heaven, Live for the Afterlife" --}}
             "KICT X-Change"
 
         </p>
         <ul class="breadcrumb justify-content-center" style="list-style: none; padding: 0; margin-top: 20px;">
             <li class="breadcrumb-item">
-                <a href="{{ route('login') }}" class="btn btn-light btn-lg px-5">Login</a>
+                <a href="{{ route('login') }}" class="btn btn-outline-light btn-lg px-5 py-2 rounded-pill shadow"
+                    style="background: rgba(255, 255, 255, 0.2); border: 2px solid white; backdrop-filter: blur(4px); font-weight: bold;">
+                    Login
+                </a>
             </li>
         </ul>
+
     </div>
 </body>
 </html>

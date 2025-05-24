@@ -141,13 +141,13 @@ class MobilityApplicationController extends Controller
 
             \Log::info('✅ Mobility Application stored successfully', ['id' => $app->id]);
 
-            // ✅ Notify staff and admin
-            $usersToNotify = User::whereIn('role', ['admin', 'staff'])->get();
+            $adminUsers = \App\Models\User::where('role_id', 1)->get();
 
-            foreach ($usersToNotify as $user) {
-                $user->notify(new NewMobilityApplicationSubmitted(
+            foreach ($adminUsers as $admin) {
+                $admin->notify(new \App\Notifications\NewMobilityApplicationSubmitted(
                     auth()->user()->name,
-                    $app->host_institution
+                    $app->host_institution,
+                    $app->proposal_id
                 ));
             }
 
@@ -160,6 +160,7 @@ class MobilityApplicationController extends Controller
 
             return redirect()->back()->with('error', 'Something went wrong while submitting your application.');
         }
+
 
 
     }

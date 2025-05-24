@@ -11,11 +11,13 @@ class NewMobilityApplicationSubmitted extends Notification
 
     protected $studentName;
     protected $proposalTitle;
+    protected $proposalId;
 
-    public function __construct($studentName, $proposalTitle)
+    public function __construct($studentName, $proposalTitle, $proposalId)
     {
         $this->studentName = $studentName;
         $this->proposalTitle = $proposalTitle;
+        $this->proposalId = $proposalId;
     }
 
     public function via(object $notifiable): array
@@ -27,8 +29,8 @@ class NewMobilityApplicationSubmitted extends Notification
     {
         return [
             'title' => 'New Mobility Application Submitted',
-            'message' => "{$this->studentName} has submitted a mobility application for {$this->proposalTitle}.",
-            'url' => route('mobility-applications.index'),
+            'message' => "{$this->studentName} has submitted a mobility application for '{$this->proposalTitle}'.",
+            'proposal_id' => $this->proposalId,
         ];
     }
 }

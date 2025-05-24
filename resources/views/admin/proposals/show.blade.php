@@ -19,6 +19,92 @@
         </div>
     </div>
 
+
+    @if($proposal->mobilityApplications->count())
+        <div class="card mt-5">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Student Application Submissions</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered align-middle">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>View Form</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($proposal->mobilityApplications as $app)
+                            <tr>
+                                <td>{{ $app->full_name }}</td>
+                                <td>{{ $app->email }}</td>
+                                <td>
+                                    @if ($app->admin_approval_status === 'approved')
+                                        <span class="badge bg-success">Approved</span>
+                                    @elseif ($app->admin_approval_status === 'rejected')
+                                        <span class="badge bg-danger">Rejected</span>
+                                    @else
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('mobility.show', $app->id) }}" class="btn btn-sm btn-outline-dark">View Form</a>
+                                </td>
+                                <td>
+                                    {{-- If pending, show approval form --}}
+                                    @if ($app->admin_approval_status === 'pending')
+                                    <form action="{{ route('mobility.handleApproval', $app->id) }}" method="POST">
+                                        @csrf
+                                            <p class="small text-muted mb-1">Approval Statement:</p>
+                                            <div class="border p-2 small bg-light mb-2">
+                                                I hereby confirm that this student has gone through the rightful university selection procedures and recommend that the student is qualified to participate in the student exchange programme above.
+                                            </div>
+
+                                            <input type="text" name="admin_approver_name" class="form-control form-control-sm mb-2" placeholder="Dean/Deputy Dean Responsible" required>
+                                            <input type="date" name="admin_approval_date" class="form-control form-control-sm mb-2" value="{{ now()->toDateString() }}" required>
+
+                                            <button type="submit" name="action" value="approve" class="btn btn-sm btn-success me-1">
+                                                <i class="fas fa-check"></i> Approve
+                                            </button>
+
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="collapse" data-bs-target="#rejectionForm-{{ $app->id }}">
+                                                <i class="fas fa-times"></i> Reject
+                                            </button>
+
+                                            <div class="collapse mt-2" id="rejectionForm-{{ $app->id }}">
+                                                <textarea name="admin_rejection_reason" class="form-control form-control-sm mb-2" rows="2" placeholder="Reason for rejection..."></textarea>
+                                                <button type="submit" name="action" value="reject" class="btn btn-sm btn-danger">
+                                                    Confirm Rejection
+                                                </button>
+                                            </div>
+                                        </form>
+                                    @else
+                                        <p><strong>Decision:</strong>
+                                            @if ($app->admin_approval_status === 'approved')
+                                                <span class="text-success">Approved</span>
+                                            @else
+                                                <span class="text-danger">Rejected</span>
+                                            @endif
+                                        </p>
+                                        <p><strong>By:</strong> {{ $app->admin_approver_name ?? '-' }}</p>
+                                        <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($app->admin_approval_date)->format('d M Y') }}</p>
+                                        @if ($app->admin_rejection_reason)
+                                            <p><strong>Reason:</strong> {{ $app->admin_rejection_reason }}</p>
+                                        @endif
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
     <!-- Proposal Details Card -->
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body">
@@ -121,90 +207,6 @@
     </div>
 
 
-    @if($proposal->mobilityApplications->count())
-        <div class="card mt-5">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Student Application Submissions</h5>
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered align-middle">
-                    <thead>
-                        <tr>
-                            <th>Student Name</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>View Form</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($proposal->mobilityApplications as $app)
-                            <tr>
-                                <td>{{ $app->full_name }}</td>
-                                <td>{{ $app->email }}</td>
-                                <td>
-                                    @if ($app->admin_approval_status === 'approved')
-                                        <span class="badge bg-success">Approved</span>
-                                    @elseif ($app->admin_approval_status === 'rejected')
-                                        <span class="badge bg-danger">Rejected</span>
-                                    @else
-                                        <span class="badge bg-warning text-dark">Pending</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="{{ route('mobility.show', $app->id) }}" class="btn btn-sm btn-outline-dark">View Form</a>
-                                </td>
-                                <td>
-                                    {{-- If pending, show approval form --}}
-                                    @if ($app->admin_approval_status === 'pending')
-                                    <form action="{{ route('mobility.handleApproval', $app->id) }}" method="POST">
-                                        @csrf
-                                            <p class="small text-muted mb-1">Approval Statement:</p>
-                                            <div class="border p-2 small bg-light mb-2">
-                                                I hereby confirm that this student has gone through the rightful university selection procedures and recommend that the student is qualified to participate in the student exchange programme above.
-                                            </div>
-
-                                            <input type="text" name="admin_approver_name" class="form-control form-control-sm mb-2" placeholder="Dean/Deputy Dean Responsible" required>
-                                            <input type="date" name="admin_approval_date" class="form-control form-control-sm mb-2" value="{{ now()->toDateString() }}" required>
-
-                                            <button type="submit" name="action" value="approve" class="btn btn-sm btn-success me-1">
-                                                <i class="fas fa-check"></i> Approve
-                                            </button>
-
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="collapse" data-bs-target="#rejectionForm-{{ $app->id }}">
-                                                <i class="fas fa-times"></i> Reject
-                                            </button>
-
-                                            <div class="collapse mt-2" id="rejectionForm-{{ $app->id }}">
-                                                <textarea name="admin_rejection_reason" class="form-control form-control-sm mb-2" rows="2" placeholder="Reason for rejection..."></textarea>
-                                                <button type="submit" name="action" value="reject" class="btn btn-sm btn-danger">
-                                                    Confirm Rejection
-                                                </button>
-                                            </div>
-                                        </form>
-                                    @else
-                                        <p><strong>Decision:</strong>
-                                            @if ($app->admin_approval_status === 'approved')
-                                                <span class="text-success">Approved</span>
-                                            @else
-                                                <span class="text-danger">Rejected</span>
-                                            @endif
-                                        </p>
-                                        <p><strong>By:</strong> {{ $app->admin_approver_name ?? '-' }}</p>
-                                        <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($app->admin_approval_date)->format('d M Y') }}</p>
-                                        @if ($app->admin_rejection_reason)
-                                            <p><strong>Reason:</strong> {{ $app->admin_rejection_reason }}</p>
-                                        @endif
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    @endif
 
 
 </div>

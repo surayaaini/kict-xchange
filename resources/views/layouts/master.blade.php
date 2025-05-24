@@ -112,21 +112,16 @@
                     <div class="dropdown-menu dropdown-menu-end p-2" style="min-width: 300px; max-height: 400px; overflow-y: auto;">
                         <h6 class="dropdown-header">Notifications</h6>
 
-
                         @forelse(auth()->user()->unreadNotifications as $notification)
-                        <div class="dropdown-item border-bottom small">
-                            <div class="text-muted">
-                                @if(isset($notification->data['proposal_id']))
-                                    <a href="{{ route('mobility.create', ['proposal_id' => $notification->data['proposal_id']]) }}" class="text-decoration-underline">
+                            <div class="dropdown-item border-bottom small">
+                                <div class="text-muted">
+                                    <span style="font-weight: 500;" class="d-block text-dark">
                                         {{ $notification->data['message'] ?? 'You have a new notification.' }}
-                                    </a>
-                                @else
-                                    {{ $notification->data['message'] ?? 'You have a new notification.' }}
-                                @endif
-                            </div>
-                            <div class="text-muted small">{{ $notification->created_at->diffForHumans() }}</div>
-                        </div>
+                                    </span>
 
+                                </div>
+                                <div class="text-muted small">{{ $notification->created_at->diffForHumans() }}</div>
+                            </div>
                         @empty
                             <div class="dropdown-item text-muted">No new notifications</div>
                         @endforelse
@@ -143,6 +138,7 @@
                 </li>
 
 
+
                 <li class="nav-item dropdown has-arrow new-user-menus">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <span class="user-img">
@@ -156,9 +152,9 @@
                                                 @if(Auth::user()->role_id == 1)
                                                     Admin
                                                 @elseif(Auth::user()->role_id == 2)
-                                                    Staff
-                                                @elseif(Auth::user()->role_id == 3)
                                                     Student
+                                                @elseif(Auth::user()->role_id == 3)
+                                                    Staff
                                                 @else
                                                     Unknown Role
                                                 @endif
@@ -182,9 +178,9 @@
                                     @if(Auth::user()->role_id == 1)
                                         Admin
                                     @elseif(Auth::user()->role_id == 2)
-                                        Staff
-                                    @elseif(Auth::user()->role_id == 3)
                                         Student
+                                    @elseif(Auth::user()->role_id == 3)
+                                        Staff
                                     @else
                                         Unknown Role
                                     @endif

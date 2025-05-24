@@ -106,7 +106,8 @@
                     <div class="card-header d-flex align-items-center">
                         <h5 class="card-title">Mobility Proposals (Outbound)</h5>
                         <ul class="chart-list-out student-ellips">
-                            <li class="lesson-view-all"><a href="#">View All</a></li>
+                            <a href="{{ route('admin.proposals.index') }}" class="lesson-view-all">View All</a>
+
                         </ul>
                     </div>
                     <div class="card-body">
@@ -139,10 +140,17 @@
                                             </ul>
 
                                         </div>
-                                        <div class="activity-btns ms-auto">
-                                            <a href="{{ route('proposal.show', $proposal->id) }}" class="btn btn-info">Details</a>
-                                            <a href="{{ route('proposal.index') }}" class="btn btn-info">Approval</a>
+                                        <div class="activity-btns ms-auto d-flex flex-column align-items-end">
+                                            <a href="{{ route('admin.proposals.show', $proposal->id) }}" class="btn btn-info mb-2">Details</a>
+                                            @if ($proposal->status === 'Approved')
+                                                <span class="badge bg-success">Approved</span>
+                                            @elseif ($proposal->status === 'Rejected')
+                                                <span class="badge bg-danger">Rejected</span>
+                                            @else
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                            @endif
                                         </div>
+
                                     </li>
                                 @endforeach
                             </ul>
@@ -175,7 +183,7 @@
                         <h5 class="card-title">Mobility Experience</h5>
                     </div>
                     <div class="col-6 text-end">
-                        <a href="{{ route('posts.post.history') }}" class="btn btn-link">View All</a>
+                        <a href="{{ route('posts.post.history') }}" class="lesson-view-all">View All</a>
                     </div>
                 </div>
             </div>
