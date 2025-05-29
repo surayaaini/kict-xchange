@@ -103,12 +103,6 @@ class AdminPostController extends Controller
         return redirect()->to(route('posts.post.history', [], false) . '#mobility')->with('success', 'Post have been rejected!');
     }
 
-    public function admindashboard()
-    {
-        $posts = Post::where('status', 'pending')->latest()->get();
-
-        return view('admin.admin-dashboard')->with('posts', $posts);
-    }
     public function history()
     {
         $posts = Post::latest()->get(); // show all statuses

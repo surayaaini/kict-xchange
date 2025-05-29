@@ -26,7 +26,7 @@
                     <div class="card-body">
                         <div class="db-widgets d-flex justify-content-between align-items-center">
                             <div class="db-info">
-                                <a href="{{ route('proposal.index') }}">
+                                <a href="{{ route('admin.proposals.index') }}">
                                     <h6>Student Mobility Application</h6>
                                     <h3>{{ $mobilityApplicationCount }}</h3>
                                 </a>
@@ -46,7 +46,7 @@
                     <div class="card-body">
                         <div class="db-widgets d-flex justify-content-between align-items-center">
                             <div class="db-info">
-                                <a href="{{ route('proposal.index') }}">
+                                <a href="{{ route('admin.proposals.index') }}">
                                     <h6>Total Mobility Proposal</h6>
                                     <h3>{{ $proposalCount }}</h3>
                                 </a>
@@ -199,7 +199,6 @@
                                             <div class="date">
                                                 <b>{{ $post->title }}</b>
                                                 <p>Status: {{ ucfirst($post->status) }}</p>
-                                                {{-- <p>Author: {{ $post->user->name ?? 'Unknown' }}</p> --}}
                                             </div>
                                         </td>
                                         <td>

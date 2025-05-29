@@ -26,7 +26,7 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->content = $request->content;
         $post->status = 'pending';
-        $post->user_id = auth()->id(); // 🔥 this connects post to the student
+        //$post->user_id = auth()->id(); // 🔥 this connects post to the student
 
         // Save photo if uploaded
         if ($request->hasFile('photo')) {

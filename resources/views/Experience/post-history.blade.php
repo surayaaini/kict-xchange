@@ -55,7 +55,9 @@
                                 @php
                                     $statusColor = match ($post->status) {
                                         'approve', 'approved' => 'bg-success',
-                                        'reject', 'rejected' => 'bg-danger',
+                                        'reject', 'rejected' => 'bg-danger', 
+                                        'pending' => 'bg-warning',
+                                        default => 'bg-secondary', 
                                     };
                                 @endphp
 

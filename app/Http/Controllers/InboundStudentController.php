@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\InboundStudent;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Carbon\Carbon;
 
 class InboundStudentController extends Controller
 {
@@ -56,46 +57,80 @@ class InboundStudentController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'full_name' => 'required|string|max:255',
             'university_origin' => 'required|string|max:255',
             'program' => 'required|string|max:255',
             'program_type' => 'required|string|max:255',
             'responsible_lecturer' => 'required|string|max:255',
-            'duration_value' => 'required|integer|min:1',
-            'duration_unit' => 'required|string|in:day,week,month',
             'received_date' => 'required|date',
             'departure_date' => 'required|date|after_or_equal:received_date',
         ]);
 
-        InboundStudent::create([
-            'full_name' => $request->input('full_name'),
-            'university_origin' => $request->input('university_origin'),
-            'program' => $request->input('program'),
-            'program_type' => $request->input('program_type'),
-            'responsible_lecturer' => $request->input('responsible_lecturer'),
-            'duration_value' => $request->input('duration_value'),
-            'duration_unit' => $request->input('duration_unit'),
-            'received_date' => $request->input('received_date'),
-            'departure_date' => $request->input('departure_date'),
-        ]);
+        $received = Carbon::parse($request->received_date);
+        $departure = Carbon::parse($request->departure_date);
+
+        $duration = $received->diffInDays($departure);
+
+        $student = new InboundStudent();
+        $student->full_name = $request->full_name;
+        $student->university_origin = $request->university_origin;
+        $student->program = $request->program;
+        $student->program_type = $request->program_type;
+        $student->responsible_lecturer = $request->responsible_lecturer;
+        $student->received_date = $received;
+        $student->departure_date = $departure;
+        $student->duration_value = $duration;
+        $student->duration_unit = 'days'; // or customize later
+        $student->save();
+
+
+        /*InboundStudent::create([
+            'full_name' => $request->full_name,
+            'university_origin' => $request->university_origin,
+            'program' => $request->program,
+            'program_type' => $request->program_type,
+            'responsible_lecturer' => $request->responsible_lecturer,
+            'duration_value' => $request->$duration['value'],
+            'duration_unit' => $request->$duration['unit'],
+            'received_date' => $request->received_date,
+            'departure_date' => $request->departure_date,
+        ]);*/
 
 
         return redirect()->route('inbounds.index')->with('success', 'Inbound student added successfully.');
     }
 
     private function parseDate($value)
-{
-    try {
-        if (is_numeric($value)) {
-            return Date::excelToDateTimeObject($value);
-        } else {
-            return new \DateTime($value);
+    {
+        try {
+            if (is_numeric($value)) {
+                return Date::excelToDateTimeObject($value);
+            } else {
+                return new \DateTime($value);
+            }
+        } catch (\Exception $e) {
+            return null; // or you could log the error
         }
-    } catch (\Exception $e) {
-        return null; // or you could log the error
     }
-}
+
+    /*private function calculateDuration($received_date, $departure_date)
+    {
+        $start = \Carbon\Carbon::parse($received_date);
+        $end = \Carbon\Carbon::parse($departure_date);
+
+        $days = $start->diffInDays($end);
+
+        if ($days >= 30 && $days % 30 === 0) {
+            return ['value' => $days / 30, 'unit' => 'month'];
+        } elseif ($days >= 7 && $days % 7 === 0) {
+            return ['value' => $days / 7, 'unit' => 'week'];
+        } else {
+            return ['value' => $days, 'unit' => 'day'];
+        }
+    }*/
+
 
     // Show Excel import form
     public function showImportForm()
@@ -104,48 +139,63 @@ class InboundStudentController extends Controller
     }
 
     // Handle Excel import
-    public function importExcel(Request $request)
-    {
-        $request->validate([
-            'excel_file' => 'required|file|mimes:xlsx,xls',
-        ]);
+   public function importExcel(Request $request)
+{
+    $request->validate([
+        'excel_file' => 'required|file|mimes:xlsx,xls'
+    ]);
 
-        $file = $request->file('excel_file');
+    $file = $request->file('excel_file');
+    $spreadsheet = IOFactory::load($file->getRealPath());
+    $worksheet = $spreadsheet->getActiveSheet();
+    $rows = $worksheet->toArray();
+
+    // Extract header row (first row)
+    $header = array_map('strtolower', array_map('trim', $rows[0]));
+
+    foreach (array_slice($rows, 1) as $row) {
+        $data = array_combine($header, $row);
 
         try {
-            $spreadsheet = IOFactory::load($file->getPathname());
-            $sheet = $spreadsheet->getActiveSheet();
-            $rows = $sheet->toArray();
+            // Parse and convert dates
+            $receivedDate = new \DateTime($data['received_date'] ?? 'now');
+            $departureDate = new \DateTime($data['departure_date'] ?? 'now');
 
-            // Skip header row
-            foreach (array_slice($rows, 1) as $row) {
-                if (empty($row[0])) {
-                    continue; // skip if no full name
-                }
-
-                // Safe date parsing
-                $receivedDate = $this->parseDate($row[7]);
-                $departureDate = $this->parseDate($row[8]);
-
-                InboundStudent::create([
-                    'full_name'             => $row[0],
-                    'university_origin'     => $row[1],
-                    'program'               => $row[2],
-                    'program_type'          => $row[3],
-                    'responsible_lecturer'  => $row[4],
-                    'duration_value'        => (int) $row[5],
-                    'duration_unit'         => strtolower(trim($row[6])),
-                    'received_date'         => $receivedDate,
-                    'departure_date'        => $departureDate,
-                ]);
+            // Validate required fields
+            if (
+                empty($data['full_name']) ||
+                empty($data['university_origin']) ||
+                empty($data['program']) ||
+                empty($data['program_type']) ||
+                empty($data['responsible_lecturer']) ||
+                empty($data['received_date']) ||
+                empty($data['departure_date'])
+            ) {
+                continue; // Skip this row if any required field is missing
             }
 
-            return redirect()->route('inbounds.index')->with('success', 'Inbound students imported successfully.');
+            $durationDays = $receivedDate->diff($departureDate)->days;
 
-        } catch (\Throwable $e) {
-            return back()->with('error', 'Import failed: ' . $e->getMessage());
+            InboundStudent::create([
+                'full_name' => $data['full_name'],
+                'university_origin' => $data['university_origin'],
+                'program' => $data['program'],
+                'program_type' => $data['program_type'],
+                'responsible_lecturer' => $data['responsible_lecturer'],
+                'received_date' => $receivedDate,
+                'departure_date' => $departureDate,
+                'duration_value' => $durationDays,
+                'duration_unit' => 'days',
+            ]);
+        } catch (\Exception $e) {
+            \Log::error("Failed to import row: " . $e->getMessage(), $data);
         }
     }
+
+    return redirect()->route('inbounds.index')->with('success', 'Inbound students imported successfully.');
+}
+
+    
 
     /**
      * Display the specified resource.

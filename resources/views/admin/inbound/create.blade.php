@@ -52,22 +52,6 @@
             <input type="text" class="form-control" name="responsible_lecturer" required>
         </div>
 
-        <div class="row mb-3">
-            <div class="col">
-                <label for="duration_value" class="form-label">Duration</label>
-                <input type="number" class="form-control" name="duration_value" min="1" required>
-            </div>
-            <div class="col">
-                <label for="duration_unit" class="form-label">Unit</label>
-                <select class="form-select" name="duration_unit" required>
-                    <option value="">Select unit</option>
-                    <option value="day">Day(s)</option>
-                    <option value="week">Week(s)</option>
-                    <option value="month">Month(s)</option>
-                </select>
-            </div>
-        </div>
-
         <div class="mb-3">
             <label for="received_date" class="form-label">Received Date</label>
             <input type="date" class="form-control" name="received_date" required>

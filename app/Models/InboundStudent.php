@@ -17,5 +17,5 @@ class InboundStudent extends Model
         'received_date',
         'departure_date',
     ];
-    
+        
 }
