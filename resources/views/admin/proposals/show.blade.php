@@ -178,7 +178,7 @@
                     {{ $proposal->status }}
                 </span>
             </p>
-
+{{--
             <!-- Approve/Reject Buttons -->
             @if($proposal->status == 'Pending')
             <div class="mt-4 d-flex gap-3">
@@ -198,7 +198,7 @@
                     </button>
                 </form>
             </div>
-            @endif
+            @endif --}}
 
             <div class="mt-4">
                 <a href="{{ route('admin.proposals.index') }}" class="btn btn-outline-secondary">Back to Proposals List</a>
